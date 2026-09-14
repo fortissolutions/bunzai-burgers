@@ -1,0 +1,11 @@
+/* Four product cards; two columns on mobile. */
+#flavours .bunzai-product-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1.2vw; align-items:stretch; }
+#flavours .bunzai-product-grid > div { min-width:0; height:32vw; }
+#flavours .bunzai-product-grid canvas { width:100% !important; height:100% !important; }
+#flavours .bunzai-product-grid .text36 { font-size:clamp(14px,1.4vw,23px); }
+@media(max-width:768px) {
+ #flavours .bunzai-product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 12px; }
+ #flavours .bunzai-product-grid > div { height:64vw; padding:8px; }
+ #flavours .bunzai-product-grid .text36 { font-size:14px; line-height:1.15; }
+ #flavours .bunzai-product-grid > div > div:last-child { gap:4px; }
+}

@@ -1,0 +1,6 @@
+/* Local story preview: brand colors only, original typography and content. */
+:root { --background:#050b2e; --foreground:#f5f5f0; --beige:#ffd21c; --light-beige:#ffd21c; --light-brown:#050b2e; --gold:#ffd21c; }
+/* The original site's scripts reveal these elements; show them in this static copy. */
+.invisible { visibility:visible !important; }
+svg [fill="#FFE386"], svg [fill="#EDE5A8"] { fill:#ffd21c; }
+svg [fill="#463721"] { fill:#050b2e; }

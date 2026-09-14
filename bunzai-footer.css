@@ -1,0 +1,20 @@
+/* Bunzai footer theme; keep the reference footer's arrangement. */
+#bunzai-footer {
+  --background: #f5f5f0;
+  --foreground: #050b2e;
+  --beige: #ffd21c;
+  --light-beige: #f5f5f0;
+  --light-brown: #050b2e;
+  --gold: #ffd21c;
+  --brand-yellow: #ffd21c;
+  background-color: #050b2e;
+  color: #f5f5f0;
+  font-family: 'DM Sans', sans-serif;
+}
+#bunzai-footer .bunzai-footer-brand { display: flex; align-items: center; gap: 12px; pointer-events: auto; color: #ffd21c; font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+#bunzai-footer nav { font-family: 'DM Sans', sans-serif; }
+#bunzai-footer .bunzai-footer-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 21vw; }
+#bunzai-footer a:focus-visible { outline: 2px solid #ffd21c; outline-offset: 5px; }
+@media (max-width: 768px) {
+  #bunzai-footer .bunzai-footer-brand { justify-content: center; }
+}

@@ -1,0 +1,7 @@
+.preview-tools/
+*.log
+*.blend1
+/Palmo_Sipping*.html
+/*-desktop.png
+/*-mobile.png
+/story-preview.png

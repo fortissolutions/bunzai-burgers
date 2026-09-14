@@ -1,0 +1,16 @@
+/* Hero background: Bunzai navy with a restrained golden product glow. */
+#Hero {
+  z-index: 10;
+  background-color: #050b2e;
+  background-image:
+    radial-gradient(ellipse at 17% 70%, rgba(255,210,28,.14) 0%, rgba(255,210,28,.035) 27%, transparent 49%),
+    radial-gradient(ellipse at 82% 15%, rgba(25,46,112,.55) 0%, transparent 58%),
+    linear-gradient(135deg, #07144a 0%, #050b2e 55%, #03071d 100%);
+}
+@media (max-width:768px) {
+  #Hero {
+    background-image:
+      radial-gradient(ellipse at 50% 49%, rgba(255,210,28,.14) 0%, transparent 47%),
+      linear-gradient(155deg, #07144a 0%, #050b2e 58%, #03071d 100%);
+  }
+}

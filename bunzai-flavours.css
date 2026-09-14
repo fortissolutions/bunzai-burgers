@@ -1,0 +1,11 @@
+/* Color-only overrides. All layout, content, typography and imagery stay intact. */
+#flavours {
+  --background: #f5f5f0;
+  --foreground: #050b2e;
+  --beige: #ffd21c;
+  --light-beige: #f5f5f0;
+  --light-brown: #050b2e;
+  --gold: #ffd21c;
+}
+#flavours [style*="--flavour"] { --flavour: #ffd21c !important; }
+#flavours svg [fill="#EDE5A8"] { fill: #ffd21c; }

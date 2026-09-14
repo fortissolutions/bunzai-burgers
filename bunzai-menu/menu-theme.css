@@ -1,0 +1,24 @@
+/* Menu-only palette, matching the main Bunzai page. */
+body {
+  background: #050b2e;
+  color: #f5f5f0;
+}
+.menu-page {
+  background:
+    radial-gradient(ellipse at 17% 65%, rgba(255,210,28,.10), transparent 45%),
+    radial-gradient(ellipse at 82% 10%, rgba(25,46,112,.55), transparent 50%),
+    linear-gradient(135deg, #07144a, #050b2e 55%, #03071d);
+}
+.menu-page .menu-intro, .menu-page .menu-list {
+  background: transparent;
+  color: #f5f5f0;
+}
+.menu-page .category-heading h2 i {
+  -webkit-text-stroke-color: #ffd21c;
+}
+.menu-page .menu-intro p, .menu-page .menu-card p,
+.menu-page .category-heading > span { color: #bec2d6; }
+.menu-page .card-top, .menu-page .text-link,
+.menu-page .filter-label span { color: #ffd21c; }
+.menu-page .filter-label { border-color: rgba(245,245,240,.35); }
+.footer { background: #050b2e; }
