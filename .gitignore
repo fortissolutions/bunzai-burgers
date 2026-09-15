@@ -5,3 +5,7 @@
 /*-desktop.png
 /*-mobile.png
 /story-preview.png
+node_modules/
+dist/
+.animation-tools/
+qa/
