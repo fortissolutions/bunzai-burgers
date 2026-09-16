@@ -5049,6 +5049,17 @@
         color: rgba(245, 245, 240, 0.8);
     }
 
+    @media (min-width: 601px) {
+        .layer-card { max-width: 230px; padding: 9px 12px; gap: 9px; border-radius: 11px; }
+        .layer-step { width: 26px; height: 26px; font-size: 11px; line-height: 26px; }
+        .layer-content h4 { font-size: 12px; }
+        .layer-content p { font-size: 10px; }
+    }
+    @media (max-width: 600px) and (max-height: 700px) {
+        .layer-content p { display: none; }
+        .layer-cards-container .layer-card { padding: 5px 7px; }
+        .layer-cards-container .layer-step { width: 18px; height: 18px; line-height: 18px; }
+    }
     /* Specific positions for 5 exploded layers */
     .layer-card-topbun { top: 18%; left: 8%; }
     .layer-card-cheese { top: 32%; right: 8%; }
@@ -5066,7 +5077,31 @@
     }
 
     @media (max-width: 600px) {
-        .layer-cards-container { display: none; }
+        .layer-cards-container {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px; inset: auto 12px 124px;
+        }
+        .layer-card {
+            position: relative; inset: auto; width: auto; max-width: none;
+            padding: 7px 8px; gap: 7px; border-radius: 9px;
+            box-shadow: none; align-items: flex-start;
+        }
+        .layer-card:last-child { grid-column: 1 / -1; }
+        .layer-step { width: 22px; height: 22px; font-size: 10px; line-height: 22px; }
+        .layer-content h4 { font-size: 10px; line-height: 1.25; }
+        .layer-content p { font-size: 9px; line-height: 1.3; }
+    }
+
+    @media (min-width: 901px) {
+        .layer-card { width: min(260px, 24vw); max-width: 260px; padding: 11px 15px; gap: 11px; }
+        .layer-step { width: 29px; height: 29px; font-size: 12px; line-height: 29px; }
+        .layer-content h4 { font-size: 13px; }
+        .layer-content p { font-size: 11px; }
+        .layer-card-topbun { top: 36%; left: auto; right: calc(50% + 200px); }
+        .layer-card-cheese { top: 44%; right: auto; left: calc(50% + 200px); }
+        .layer-card-patty { top: 54%; left: auto; right: calc(50% + 200px); }
+        .layer-card-veggies { top: 64%; right: auto; left: calc(50% + 200px); }
+        .layer-card-botbun { top: 72%; left: auto; right: calc(50% + 200px); }
     }
 
     .product-scroll-hint {
