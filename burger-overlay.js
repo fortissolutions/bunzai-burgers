@@ -280,10 +280,12 @@ class BurgerOverlayEngine {
 
       // Section 1: Hero -> 360 degree rotation (frames 0 to heroEndFrame = 84)
       // One complete source rotation every 12 seconds, independent of scrolling.
-      if (this.isInitialReady && !this.reducedMotion.matches) {
+      const heroFramesReady = this.heroEndFrame + 1 <= this.framesMap.size &&
+        Array.from({ length: this.heroEndFrame + 1 }, (_, index) => this.framesMap.has(index)).every(Boolean);
+      if (heroFramesReady && !this.reducedMotion.matches) {
         this.idleFrame = (this.idleFrame + delta * this.heroEndFrame / 12) % this.heroEndFrame;
       }
-      targetFloatFrame = this.reducedMotion.matches ? 0 : this.idleFrame;
+      targetFloatFrame = this.reducedMotion.matches || !heroFramesReady ? 0 : this.idleFrame;
       // Do not interpolate backwards across the rotation seam.
       this.currentFloatFrame = targetFloatFrame;
 
@@ -361,7 +363,8 @@ class BurgerOverlayEngine {
       this.wrapper.dataset.frame = String(Math.round(this.currentFloatFrame));
       this.wrapper.dataset.centerX = String(this.currentX);
     }
-    const idle = inHero && !inProduct && this.isInitialReady && !this.reducedMotion.matches;
+    const idle = inHero && !inProduct && this.isInitialReady && !this.reducedMotion.matches &&
+      this.framesMap.size >= this.heroEndFrame + 1;
     const settling = Math.abs(this.currentTilt - targetTilt) > 0.0001 || Math.abs(this.currentScale - targetScale) > 0.001 || Math.abs(this.currentFloatFrame - targetFloatFrame) > 0.02 ||
       Math.abs(this.currentX - targetX) > 0.2 || Math.abs(this.currentY - targetY) > 0.2 ||
       Math.abs(this.currentOpacity - this.targetOpacity) > 0.005;
@@ -432,15 +435,11 @@ class BurgerOverlayEngine {
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, winW, winH);
 
-    // Sub-frame indexing & crossfading calculations
+    // Draw one fully opaque frame at a time. Crossfading two transparent food
+    // frames causes brightness flicker and visible ghosting during the idle loop.
     const floatIdx = this.dockProgress > 0 ? this.totalFrames - 1 : Math.max(0, Math.min(this.totalFrames - 1, this.currentFloatFrame));
-    const f1Idx = Math.floor(floatIdx);
-    const f2Idx = Math.min(this.totalFrames - 1, f1Idx + 1);
-    const fraction = floatIdx - f1Idx;
-
-    const img1 = this.getFrame(f1Idx);
-    const img2 = this.getFrame(f2Idx);
-    const refImg = img1 || img2;
+    const frameIdx = Math.round(floatIdx);
+    const refImg = this.getFrame(frameIdx);
 
     if (refImg) {
       const naturalW = refImg.naturalWidth || 1280;
@@ -483,17 +482,8 @@ class BurgerOverlayEngine {
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
-      // Primary Sub-Frame
-      if (img1) {
-        ctx.globalAlpha = 1 - fraction;
-        ctx.drawImage(img1, drawX, drawY, drawW, drawH);
-      }
-
-      // Secondary Sub-Frame crossfade for liquid smooth slow-motion
-      if (fraction > 0.005 && img2 && img2 !== img1) {
-        ctx.globalAlpha = fraction;
-        ctx.drawImage(img2, drawX, drawY, drawW, drawH);
-      }
+      ctx.globalAlpha = 1;
+      ctx.drawImage(refImg, drawX, drawY, drawW, drawH);
     }
 
     ctx.restore();
