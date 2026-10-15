@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bunzai Burgers — Bigger. Bolder. Better.</title>
+<!-- Google Fonts for Display & Body Typography -->
+<link href="./assets/bunzai-favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Compiled from the Stitch template's Tailwind setup (see bunzai-site.css) -->
+<link href="./bunzai-site.css" rel="stylesheet"/>
+</head>
+<body class="font-sans antialiased selection:bg-brand-yellow selection:text-black">
+<canvas aria-hidden="true" id="burgerCanvas"></canvas>
+<!-- BEGIN: Sticky Header -->
+<header class="sticky top-0 z-50 w-full backdrop-blur-md bg-brand-bg/85 border-b border-brand-border transition-all">
+<div class="max-w-[1180px] mx-auto px-6 h-20 flex items-center justify-between">
+<!-- Brand Logo Badge -->
+<a class="flex items-center gap-3.5 group" href="#">
+<div class="w-10 h-10 rounded-xl bg-brand-yellow flex items-center justify-center font-black text-black text-2xl shadow-lg shadow-brand-yellow/20 group-hover:scale-105 transition-transform">
+          B
+        </div>
+<div class="flex flex-col">
+<span class="font-extrabold tracking-wider text-lg uppercase text-white leading-none group-hover:text-brand-yellow transition-colors">
+            Bunzai
+          </span>
+<span class="text-[10px] tracking-widest text-brand-yellow uppercase font-bold mt-1 leading-none">
+            Burgers
+          </span>
+</div>
+</a>
+<!-- Desktop Navigation Menu -->
+<nav aria-label="Main Navigation" class="hidden md:flex items-center gap-9">
+<a class="text-sm font-semibold tracking-wide text-brand-yellow transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-brand-yellow" href="#hero">
+          Home
+        </a>
+<a class="text-sm font-semibold tracking-wide text-brand-muted hover:text-white transition-colors relative py-1 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-brand-yellow" href="#craft">
+          Craft
+        </a>
+<a class="text-sm font-semibold tracking-wide text-brand-muted hover:text-white transition-colors relative py-1 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-brand-yellow" href="#menu">
+          Menu
+        </a>
+<a class="text-sm font-semibold tracking-wide text-brand-muted hover:text-white transition-colors relative py-1 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-brand-yellow" href="#story">
+          Story
+        </a>
+<a class="text-sm font-semibold tracking-wide text-brand-muted hover:text-white transition-colors relative py-1 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-brand-yellow" href="#locations">
+          Locations
+        </a>
+</nav>
+<!-- Action Button CTA -->
+<div class="flex items-center gap-4">
+<a class="inline-flex items-center justify-center gap-2 bg-brand-yellow hover:bg-brand-yellowHover text-black text-xs font-black uppercase tracking-wider px-6 py-3 rounded-full shadow-lg shadow-brand-yellow/25 hover:shadow-brand-yellow/40 hover:-translate-y-0.5 transition-all" href="#menu">
+<span>View Menu</span>
+<svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</div>
+</header>
+<!-- END: Sticky Header -->
+<!-- BEGIN: Hero Section -->
+<section class="relative pt-12 pb-24 md:py-28 overflow-hidden" data-purpose="hero-section" id="hero">
+<!-- Atmospheric Background Radial Glow -->
+<div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] glow-yellow rounded-full pointer-events-none -z-10"></div>
+<div class="absolute top-10 left-10 w-[450px] h-[450px] glow-subtle rounded-full pointer-events-none -z-10"></div>
+<div class="max-w-[1180px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Left Column: Copy & CTAs -->
+<div class="lg:col-span-7 flex flex-col items-start z-10">
+<!-- Eyebrow Badge -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-6">
+<span class="w-2 h-2 rounded-full bg-brand-yellow animate-ping"></span>
+<span>● PREMIUM SMASH BURGERS</span>
+</div>
+<!-- Massive Headline -->
+<h1 class="text-6xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.92] text-white mb-6">
+          Bigger<br/>
+          Bolder<br/>
+<span class="text-brand-yellow underline decoration-brand-yellow/30 underline-offset-8">Better.</span>
+</h1>
+<!-- Subheading Paragraph -->
+<p class="text-lg md:text-xl text-brand-muted max-w-xl font-normal leading-relaxed mb-10">
+          Fresh ingredients. Bold flavors. Hand-smashed 100% prime Angus beef with molten triple cheddar, caramelized crispy edges, and signature house glaze on toasted brioche.
+        </p>
+<!-- CTA Buttons -->
+<div class="flex flex-wrap items-center gap-4 sm:gap-6 w-full sm:w-auto">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-yellow hover:bg-brand-yellowHover text-black text-sm font-black uppercase tracking-wider px-8 py-4 rounded-full shadow-xl shadow-brand-yellow/30 hover:scale-105 transition-all" href="#menu">
+<span>Order Now</span>
+<svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<!-- Trigger for Story Modal -->
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-panel hover:bg-brand-panelLight text-white border border-brand-border hover:border-brand-yellow/50 text-sm font-bold tracking-wide px-7 py-4 rounded-full transition-all group" id="openStoryModalBtn" type="button">
+<span class="w-7 h-7 rounded-full bg-brand-yellow/10 flex items-center justify-center text-brand-yellow group-hover:scale-110 transition-transform">
+<svg class="w-4 h-4 fill-current ml-0.5" viewbox="0 0 24 24">
+<path d="M8 5v14l11-7z"></path>
+</svg>
+</span>
+<span>Watch Our Story</span>
+</button>
+</div>
+<!-- Social Proof Numbers Indicator Bar -->
+<div class="flex items-center gap-8 mt-14 pt-8 border-t border-brand-border/60 w-full max-w-md">
+<div class="flex items-center gap-3">
+<span class="text-2xl font-black text-brand-yellow">01</span>
+<div class="h-1 w-6 bg-brand-yellow rounded-full"></div>
+<span class="text-xs uppercase font-bold tracking-widest text-brand-muted">Craft</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-2xl font-black text-slate-600">02</span>
+<div class="h-1 w-6 bg-slate-800 rounded-full"></div>
+<span class="text-xs uppercase font-bold tracking-widest text-brand-muted">Taste</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-2xl font-black text-slate-600">03</span>
+<div class="h-1 w-6 bg-slate-800 rounded-full"></div>
+<span class="text-xs uppercase font-bold tracking-widest text-brand-muted">Obsession</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Hero Burger Showcase -->
+<div class="lg:col-span-5 relative flex items-center justify-center">
+<!-- Floating Visual Container -->
+<div class="relative w-full max-w-[460px] aspect-square flex items-center justify-center animate-float-subtle">
+<!-- Golden circular backlight glow behind hero burger -->
+<div class="absolute inset-0 rounded-full bg-brand-yellow/15 blur-3xl -z-10 scale-90"></div>
+<!-- Hero Burger Main Photo -->
+<img alt="Bunzai smash burger with melted cheddar and a splash of glaze" class="hero-photo w-full h-full object-cover" src="./assets/hero-smash.jpg" fetchpriority="high"/>
+<!-- Floating Guarantee Stamp Badge -->
+<div class="absolute -bottom-2 -left-4 sm:left-0 bg-brand-panel/95 backdrop-blur-md border border-brand-yellow/40 p-4 rounded-2xl shadow-2xl flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-brand-yellow/15 border border-brand-yellow/30 flex items-center justify-center text-brand-yellow">
+<svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-wider text-brand-yellow font-black">Certified Prime</p>
+<p class="text-sm font-bold text-white">100% Angus Smashed</p>
+</div>
+</div>
+<!-- Handwritten Stamp Accent -->
+<div class="absolute -top-4 -right-4 bg-brand-yellow text-black font-script text-2xl font-bold px-4 py-1.5 rounded-xl shadow-lg rotate-6 select-none">
+            Real Cravings.
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Hero Section -->
+<!-- BEGIN: Promotional Marquee -->
+<section aria-label="Ticker" class="w-full bg-brand-yellow overflow-hidden py-3.5 select-none border-y-2 border-black">
+<div class="flex whitespace-nowrap animate-marquee">
+<!-- First copy of text for seamless loop -->
+<div class="flex items-center gap-6 font-black uppercase text-base tracking-wider text-black font-sans shrink-0 px-3">
+<span>SMASHED FRESH</span> ✦ 
+        <span>TRIPLE CHEDDAR</span> ✦ 
+        <span>SIGNATURE HOUSE GLAZE</span> ✦ 
+        <span>CRISPY CARAMELIZED EDGES</span> ✦ 
+        <span>BIGGER. BOLDER. BETTER.</span> ✦ 
+        <span>100% PRIME ANGUS</span> ✦ 
+        <span>48-HR FERMENTED BUNS</span> ✦
+      </div>
+<!-- Duplicate copy for continuous infinity ticker -->
+<div class="flex items-center gap-6 font-black uppercase text-base tracking-wider text-black font-sans shrink-0 px-3">
+<span>SMASHED FRESH</span> ✦ 
+        <span>TRIPLE CHEDDAR</span> ✦ 
+        <span>SIGNATURE HOUSE GLAZE</span> ✦ 
+        <span>CRISPY CARAMELIZED EDGES</span> ✦ 
+        <span>BIGGER. BOLDER. BETTER.</span> ✦ 
+        <span>100% PRIME ANGUS</span> ✦ 
+        <span>48-HR FERMENTED BUNS</span> ✦
+      </div>
+</div>
+</section>
+<!-- END: Promotional Marquee -->
+<!-- BEGIN: Craft / Burger Anatomy Section (scroll-driven) -->
+<section class="relative bg-brand-bg h-[300vh]" data-purpose="burger-anatomy-section" id="craft">
+<div class="sticky top-0 h-screen pt-20 overflow-hidden flex flex-col">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] glow-subtle pointer-events-none rounded-full"></div>
+<div class="relative max-w-[1180px] w-full mx-auto px-6 flex flex-col flex-1 min-h-0 py-6 lg:py-8">
+<div class="text-center max-w-2xl mx-auto mb-4 lg:mb-6 shrink-0">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-3">
+<span>● DECONSTRUCTED CRAFT • EXPLODE &amp; REJOIN</span>
+</div>
+<h2 class="text-3xl sm:text-5xl lg:text-[3.4rem] font-black uppercase tracking-tight text-white leading-[0.95] mb-3">The Anatomy Of A Perfect Smash</h2>
+<p class="text-brand-muted text-sm sm:text-base hidden sm:block">Scroll to take it apart layer by layer. Every detail engineered for maximum crust and melted harmony.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-1 min-h-0">
+<div class="hidden lg:flex lg:col-span-4 flex-col gap-4 xl:gap-5">
+<div data-layer-card class="layer-card p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">01</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">Artisan Sourdough Bun</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">48-hr slow fermented, toasted with clarified butter to seal in moisture without getting soggy.</p></div>
+</div>
+</div>
+<div data-layer-card class="layer-card p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">03</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">100% Prime Angus Beef</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">Hand-smashed on 600°F cast iron for ultra-crispy caramelized lace edges and maximum savory crust.</p></div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 h-full min-h-0 flex flex-col items-center justify-center">
+<div aria-label="Bunzai burger separating into its layers" class="w-full max-w-[420px] flex-1 min-h-[260px]" id="craftBurgerSlot" role="img"></div>
+<div class="w-40 h-1 rounded-full bg-brand-panelLight overflow-hidden mt-3 shrink-0"><div class="h-full bg-brand-yellow" id="craftProgress"></div></div>
+<span class="mt-3 text-[11px] uppercase tracking-widest text-brand-yellow font-extrabold flex items-center gap-1.5 shrink-0"><span>Keep scrolling</span><span class="animate-bounce">↓</span></span>
+</div>
+<div class="hidden lg:flex lg:col-span-4 flex-col gap-4 xl:gap-5">
+<div data-layer-card class="layer-card p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">02</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">Aged Cheddar &amp; Smoked Aioli</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">Triple melted sharp Wisconsin cheddar with oak-smoked drizzle and creamy emulsified pepper.</p></div>
+</div>
+</div>
+<div data-layer-card class="layer-card p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">04</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">Farm-Fresh Toppings</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">Crisp heirloom sliced tomatoes, chilled crunchy dill pickles &amp; hydroponic butter lettuce leaf.</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Layer details for small screens (side cards don't fit beside the burger) -->
+<section aria-label="Burger layers" class="lg:hidden bg-brand-bg pb-20">
+<div class="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-6 px-6 pb-2">
+<div class="w-[78%] sm:w-[46%] shrink-0 snap-start p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">01</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">Artisan Sourdough Bun</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">48-hr slow fermented, toasted with clarified butter to seal in moisture without getting soggy.</p></div>
+</div>
+</div>
+<div class="w-[78%] sm:w-[46%] shrink-0 snap-start p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">02</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">Aged Cheddar &amp; Smoked Aioli</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">Triple melted sharp Wisconsin cheddar with oak-smoked drizzle and creamy emulsified pepper.</p></div>
+</div>
+</div>
+<div class="w-[78%] sm:w-[46%] shrink-0 snap-start p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">03</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">100% Prime Angus Beef</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">Hand-smashed on 600°F cast iron for ultra-crispy caramelized lace edges and maximum savory crust.</p></div>
+</div>
+</div>
+<div class="w-[78%] sm:w-[46%] shrink-0 snap-start p-4 xl:p-5 rounded-2xl bg-brand-panel/90 border border-brand-border hover:border-brand-yellow/40 transition-colors shadow-xl group">
+<div class="flex items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-brand-yellow text-black font-extrabold flex items-center justify-center text-sm shrink-0 shadow-md">04</div>
+<div><h4 class="text-sm xl:text-base font-bold text-brand-yellow group-hover:text-white transition-colors">Farm-Fresh Toppings</h4>
+<p class="text-xs text-brand-muted mt-1 leading-relaxed">Crisp heirloom sliced tomatoes, chilled crunchy dill pickles &amp; hydroponic butter lettuce leaf.</p></div>
+</div>
+</div>
+<div aria-hidden="true" class="shrink-0 w-2"></div></div>
+<p class="mt-3 text-center text-[11px] uppercase tracking-widest text-brand-muted font-bold">← Swipe →</p>
+</section>
+<!-- END: Craft / Burger Anatomy Section -->
+<!-- BEGIN: Menu Section -->
+<section class="py-28 bg-brand-panel relative" data-purpose="menu-section" id="menu">
+<div class="max-w-[1180px] mx-auto px-6">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-bg border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-3">
+<span>● MADE TO CRAVE</span>
+</div>
+<h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">
+            Our Signature Smashes &amp; Sides
+          </h2>
+<p class="text-brand-muted text-base mt-2">
+            Pick your mood. We’ll handle the sizzle, crisp edges, and mess.
+          </p>
+</div>
+<!-- Filter Tab Buttons -->
+<div class="flex items-center gap-2 bg-brand-bg p-1.5 rounded-full border border-brand-border self-start md:self-auto" role="tablist">
+<button class="menu-tab-btn active px-3.5 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all bg-brand-yellow text-black" data-filter="all">
+            All
+          </button>
+<button class="menu-tab-btn px-3.5 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-white transition-all" data-filter="burgers">
+            Burgers
+          </button>
+<button class="menu-tab-btn px-3.5 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-white transition-all" data-filter="sides">
+            Sides
+          </button>
+<button class="menu-tab-btn px-3.5 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-white transition-all" data-filter="drinks">
+            Drinks
+          </button>
+</div>
+</div>
+<!-- 3-Column Desktop Grid for Menu Items -->
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8" id="menuCardsGrid">
+<!-- CARD 1: Bunzai Classic -->
+<article class="menu-card group rounded-2xl sm:rounded-3xl bg-brand-bg border border-brand-border hover:border-brand-borderActive p-3 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-yellow/10" data-category="burgers">
+<div>
+<div class="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 wrap-paper">
+<img alt="Bunzai Classic Smash Burger" class="absolute inset-2.5 sm:inset-5 w-[calc(100%-1.25rem)] h-[calc(100%-1.25rem)] sm:w-[calc(100%-2.5rem)] sm:h-[calc(100%-2.5rem)] z-[1] object-cover rounded-lg sm:rounded-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] group-hover:scale-[1.03] transition-transform duration-500" src="./assets/hero-burger.jpg" data-remote="https://lh3.googleusercontent.com/aida-public/AB6AXuBfjwRd5cvykPBguRjQtFbMB8XvKdoe21CawzKmjqGAZBt6izFwMHC_JVWxAFL8WtOmqkweQo5ByxxdCyUDumTz1amv4gjC_qqqr3TRJsmVWtoAcOffu-c3Upe8VmmYwbK2L4zMSq2SYttJtBMCETecB76OrgHC-XTxjWPsAteLB4pPi-QDiH0-d_78PFaRcZOEuno6tSrP4Fa9OmhxHHAG-ou0r-TpS3fWI78ubF2yIfFkLCN9rp9TrQ" onerror="if(this.dataset.remote){this.src=this.dataset.remote;this.dataset.remote=''}else{this.onerror=null;this.style.visibility='hidden'}"/>
+<span class="absolute z-[2] top-3.5 left-3.5 sm:top-7 sm:left-7 bg-brand-yellow text-black text-[9px] sm:text-[11px] font-black uppercase px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md tracking-wider">
+                Bestseller
+              </span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-3 mb-1.5 sm:mb-2">
+<h3 class="text-sm sm:text-xl leading-tight font-extrabold text-white group-hover:text-brand-yellow transition-colors">Bunzai Classic</h3>
+<span class="text-sm sm:text-lg font-black text-brand-yellow whitespace-nowrap">AED 32</span>
+</div>
+<p class="text-[11px] sm:text-sm text-brand-muted leading-snug sm:leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+              Double smashed Angus beef, triple aged cheddar, dill pickles &amp; house glaze on buttery brioche.
+            </p>
+</div>
+<div class="flex items-center justify-between pt-2.5 sm:pt-4 border-t border-brand-border/60">
+<span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-500">Burgers</span>
+<button aria-label="Add Bunzai Classic to order" class="add-to-order-btn w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-base sm:text-lg transition-transform active:scale-90" data-name="Bunzai Classic" type="button">
+              +
+            </button>
+</div>
+</article>
+<!-- CARD 2: Firecracker Smash -->
+<article class="menu-card group rounded-2xl sm:rounded-3xl bg-brand-bg border border-brand-border hover:border-brand-borderActive p-3 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-yellow/10" data-category="burgers">
+<div>
+<div class="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 wrap-paper">
+<img alt="Firecracker Smash burger in flames" class="absolute inset-0 z-[1] w-full h-full object-contain p-2 sm:p-3 drop-shadow-[0_14px_18px_rgba(0,0,0,0.55)] group-hover:scale-105 transition-transform duration-500" loading="lazy" src="./assets/firecracker-cutout.webp"/>
+<span class="absolute z-[2] top-3.5 left-3.5 sm:top-7 sm:left-7 bg-red-600 text-white text-[9px] sm:text-[11px] font-black uppercase px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md tracking-wider">
+                Spicy
+              </span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-3 mb-1.5 sm:mb-2">
+<h3 class="text-sm sm:text-xl leading-tight font-extrabold text-white group-hover:text-brand-yellow transition-colors">Firecracker Smash</h3>
+<span class="text-sm sm:text-lg font-black text-brand-yellow whitespace-nowrap">AED 36</span>
+</div>
+<p class="text-[11px] sm:text-sm text-brand-muted leading-snug sm:leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+              Smoky Angus beef, pickled jalapeño crunch, molten cheddar &amp; hot fire drizzle sauce on brioche.
+            </p>
+</div>
+<div class="flex items-center justify-between pt-2.5 sm:pt-4 border-t border-brand-border/60">
+<span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-500">Burgers</span>
+<button aria-label="Add Firecracker Smash to order" class="add-to-order-btn w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-base sm:text-lg transition-transform active:scale-90" data-name="Firecracker Smash" type="button">
+              +
+            </button>
+</div>
+</article>
+<!-- CARD 3: Bunzai Truffle -->
+<article class="menu-card group rounded-2xl sm:rounded-3xl bg-brand-bg border border-brand-border hover:border-brand-borderActive p-3 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-yellow/10" data-category="burgers">
+<div>
+<div class="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 wrap-paper">
+<img alt="Bunzai Truffle Smash Burger" class="absolute inset-2.5 sm:inset-5 w-[calc(100%-1.25rem)] h-[calc(100%-1.25rem)] sm:w-[calc(100%-2.5rem)] sm:h-[calc(100%-2.5rem)] z-[1] object-cover rounded-lg sm:rounded-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] group-hover:scale-[1.03] transition-transform duration-500" src="./assets/truffle.jpg" data-remote="https://lh3.googleusercontent.com/aida-public/AB6AXuA2NmroVKD4LD4QKkALVY86U-QIL2kDharmRm4voJJ0foeqpNzuZd4deg_VYvhJG5UiOYMU3flrvEuuV10jvTw4wCgEfovlrmw9xF5jKYaObvSyIbtkOuYk52Qms7RtbHFTGY7yUSTU-W7ae6rUKOTZcZLg0HBFR8-xD-Iv5YOyT1MhVCwa_STqDzW_qIE6E6qY9WD58RBAZUHhFBJ32azPbCNijupxlaclgVpVqbcTt_uLYnk-NzupAA" onerror="if(this.dataset.remote){this.src=this.dataset.remote;this.dataset.remote=''}else{this.onerror=null;this.style.visibility='hidden'}"/>
+<span class="absolute z-[2] top-3.5 left-3.5 sm:top-7 sm:left-7 bg-amber-400 text-black text-[9px] sm:text-[11px] font-black uppercase px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md tracking-wider">
+                Signature
+              </span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-3 mb-1.5 sm:mb-2">
+<h3 class="text-sm sm:text-xl leading-tight font-extrabold text-white group-hover:text-brand-yellow transition-colors">Bunzai Truffle</h3>
+<span class="text-sm sm:text-lg font-black text-brand-yellow whitespace-nowrap">AED 42</span>
+</div>
+<p class="text-[11px] sm:text-sm text-brand-muted leading-snug sm:leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+              Double Angus, wild sautéed mushrooms, caramelized onions, rich black truffle aioli &amp; shaved parmesan.
+            </p>
+</div>
+<div class="flex items-center justify-between pt-2.5 sm:pt-4 border-t border-brand-border/60">
+<span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-500">Burgers</span>
+<button aria-label="Add Bunzai Truffle to order" class="add-to-order-btn w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-base sm:text-lg transition-transform active:scale-90" data-name="Bunzai Truffle" type="button">
+              +
+            </button>
+</div>
+</article>
+<!-- CARD 4: Loaded Fries -->
+<article class="menu-card group rounded-2xl sm:rounded-3xl bg-brand-bg border border-brand-border hover:border-brand-borderActive p-3 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-yellow/10" data-category="sides">
+<div>
+<div class="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 wrap-paper">
+<img alt="Loaded Bunzai Fries" class="absolute inset-2.5 sm:inset-5 w-[calc(100%-1.25rem)] h-[calc(100%-1.25rem)] sm:w-[calc(100%-2.5rem)] sm:h-[calc(100%-2.5rem)] z-[1] object-cover rounded-lg sm:rounded-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] group-hover:scale-[1.03] transition-transform duration-500" src="./assets/loaded-fries.jpg" data-remote="https://lh3.googleusercontent.com/aida-public/AB6AXuBnDYiabi_secgsBQr-4o5mcoGf8hU4rpXFuEHfi7DIULG3glk6csOjduItf-8aXBnyPQRnJ7l-_zB1YLlTqiwKNa_4AYz475VhFQNhZJMGZ1ASoayhlFNNSN8rZ_h8z9TRwZdeZ165HLdncUwaC-cTVqD3NeKNyyjn0i7JA0Lf7fa7884MCDHk0OsidyYK4zngmW3W9TkRtS4HdnoWMAh6ZehbjHKj-x6SoiZcy4k960B0MIa36VPIvA" onerror="if(this.dataset.remote){this.src=this.dataset.remote;this.dataset.remote=''}else{this.onerror=null;this.style.visibility='hidden'}"/>
+<span class="absolute z-[2] top-3.5 left-3.5 sm:top-7 sm:left-7 bg-brand-yellow text-black text-[9px] sm:text-[11px] font-black uppercase px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md tracking-wider">
+                Loaded
+              </span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-3 mb-1.5 sm:mb-2">
+<h3 class="text-sm sm:text-xl leading-tight font-extrabold text-white group-hover:text-brand-yellow transition-colors">Loaded Fries</h3>
+<span class="text-sm sm:text-lg font-black text-brand-yellow whitespace-nowrap">AED 18</span>
+</div>
+<p class="text-[11px] sm:text-sm text-brand-muted leading-snug sm:leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+              Crisp seasoned fries smothered in warm molten cheddar sauce, signature glaze &amp; smoky bacon crumbles.
+            </p>
+</div>
+<div class="flex items-center justify-between pt-2.5 sm:pt-4 border-t border-brand-border/60">
+<span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-500">Sides</span>
+<button aria-label="Add Loaded Fries to order" class="add-to-order-btn w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-base sm:text-lg transition-transform active:scale-90" data-name="Loaded Fries" type="button">
+              +
+            </button>
+</div>
+</article>
+<!-- CARD 5: Bunzai Onion Rings -->
+<article class="menu-card group rounded-2xl sm:rounded-3xl bg-brand-bg border border-brand-border hover:border-brand-borderActive p-3 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-yellow/10" data-category="sides">
+<div>
+<div class="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 wrap-paper flex items-center justify-center">
+<!-- Geometric food representation -->
+<div class="relative z-[1] w-20 h-20 sm:w-32 sm:h-32 rounded-full bg-brand-bg/80 backdrop-blur-sm border-4 sm:border-8 border-brand-yellow/70 border-dashed flex items-center justify-center">
+<div class="w-12 h-12 sm:w-20 sm:h-20 rounded-full border-2 sm:border-4 border-brand-yellow/50 border-dotted flex items-center justify-center text-center text-brand-yellow text-[8px] sm:text-xs font-bold uppercase">
+                  Crispy Ring
+                </div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-3 mb-1.5 sm:mb-2">
+<h3 class="text-sm sm:text-xl leading-tight font-extrabold text-white group-hover:text-brand-yellow transition-colors">Bunzai Onion Rings</h3>
+<span class="text-sm sm:text-lg font-black text-brand-yellow whitespace-nowrap">AED 16</span>
+</div>
+<p class="text-[11px] sm:text-sm text-brand-muted leading-snug sm:leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+              Extra-thick yellow sweet onions, beer-battered, flash-fried golden and served with smoky dipping sauce.
+            </p>
+</div>
+<div class="flex items-center justify-between pt-2.5 sm:pt-4 border-t border-brand-border/60">
+<span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-500">Sides</span>
+<button aria-label="Add Onion Rings to order" class="add-to-order-btn w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-base sm:text-lg transition-transform active:scale-90" data-name="Bunzai Onion Rings" type="button">
+              +
+            </button>
+</div>
+</article>
+<!-- CARD 6: Bunzai Draft Cola -->
+<article class="menu-card group rounded-2xl sm:rounded-3xl bg-brand-bg border border-brand-border hover:border-brand-borderActive p-3 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-yellow/10" data-category="drinks">
+<div>
+<div class="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 wrap-paper flex items-center justify-center">
+<!-- Beverage Icon / Illustration -->
+<div class="relative z-[1] flex flex-col items-center">
+<div class="w-10 h-16 sm:w-14 sm:h-24 rounded-b-2xl rounded-t-sm border-2 border-brand-yellow/60 bg-gradient-to-t from-black to-amber-950 flex flex-col items-center justify-between p-2 shadow-inner">
+<div class="w-full h-2 bg-white/20 rounded-sm"></div>
+<span class="text-[9px] font-black text-brand-yellow tracking-widest uppercase">COLD</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-3 mb-1.5 sm:mb-2">
+<h3 class="text-sm sm:text-xl leading-tight font-extrabold text-white group-hover:text-brand-yellow transition-colors">Bunzai Draft Cola</h3>
+<span class="text-sm sm:text-lg font-black text-brand-yellow whitespace-nowrap">AED 10</span>
+</div>
+<p class="text-[11px] sm:text-sm text-brand-muted leading-snug sm:leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+              Cold, fizzy house draft craft cola infused with natural vanilla bean. Custom-built to balance rich burgers.
+            </p>
+</div>
+<div class="flex items-center justify-between pt-2.5 sm:pt-4 border-t border-brand-border/60">
+<span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-500">Drinks</span>
+<button aria-label="Add Draft Cola to order" class="add-to-order-btn w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-base sm:text-lg transition-transform active:scale-90" data-name="Bunzai Draft Cola" type="button">
+              +
+            </button>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- END: Menu Section -->
+<!-- BEGIN: Brand Story Section -->
+<section class="py-28 relative overflow-hidden bg-brand-bg" data-purpose="brand-story-section" id="story">
+<div class="max-w-[1180px] mx-auto px-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+<!-- Left Column: Stylized Editorial Quote & Image Card -->
+<div class="lg:col-span-6 relative">
+<div class="relative rounded-3xl overflow-hidden bg-brand-panel border border-brand-border p-8 md:p-12 shadow-2xl flex flex-col justify-between min-h-[460px]">
+<!-- Storefront Image Overlay (Image 3 Inspiration) -->
+<div class="absolute inset-0 opacity-25 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-500/20 via-slate-900 to-black pointer-events-none"></div>
+<!-- Top Header Mark -->
+<div class="flex items-center justify-between z-10">
+<div class="w-12 h-12 rounded-xl bg-brand-yellow text-black font-black text-2xl flex items-center justify-center shadow-lg">
+                B
+              </div>
+<span class="text-xs uppercase font-black tracking-widest text-brand-yellow border border-brand-yellow/30 px-3 py-1 rounded-full">
+                Est. Muwaileh
+              </span>
+</div>
+<!-- Stylized Quote -->
+<div class="my-8 z-10">
+<p class="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white leading-tight">
+                “We don’t make quiet burgers. We make the kind you think about tomorrow.”
+              </p>
+</div>
+<!-- Signature Script Footer -->
+<div class="flex items-center justify-between pt-6 border-t border-brand-border/60 z-10">
+<div>
+<p class="font-script text-3xl text-brand-yellow">Good Food. Good Vibes.</p>
+<p class="text-xs uppercase tracking-wider text-brand-muted mt-1">The Bunzai Crew Promise</p>
+</div>
+<!-- Stamp Icon -->
+<div class="w-14 h-14 rounded-full border-2 border-dashed border-brand-yellow/60 flex items-center justify-center text-brand-yellow font-black text-xs uppercase rotate-12">
+                100% Bold
+              </div>
+</div>
+</div>
+</div>
+<!-- Right Column: Editorial Text & Values -->
+<div class="lg:col-span-6 flex flex-col items-start">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-4">
+<span>● ABOUT BUNZAI</span>
+</div>
+<h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight mb-6">
+            More Than Just Burgers.
+          </h2>
+<p class="text-brand-muted text-base md:text-lg leading-relaxed mb-8">
+            At Bunzai Burgers, we believe great food brings people together. We are obsessives who spent hundreds of hours tuning griddle temperatures, fat-to-meat ratios, and bun buttering techniques to craft burgers without compromise. Every patty is hand-smashed on scorching 600°F cast iron the moment you order.
+          </p>
+<!-- 2-Column Checklist of Values -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-10">
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-brand-panel/60 border border-brand-border">
+<span class="w-6 h-6 rounded-md bg-brand-yellow/15 text-brand-yellow flex items-center justify-center font-bold text-sm shrink-0">
+                ✓
+              </span>
+<span class="text-sm font-bold text-white">Freshly smashed to order</span>
+</div>
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-brand-panel/60 border border-brand-border">
+<span class="w-6 h-6 rounded-md bg-brand-yellow/15 text-brand-yellow flex items-center justify-center font-bold text-sm shrink-0">
+                ✓
+              </span>
+<span class="text-sm font-bold text-white">Premium Angus beef</span>
+</div>
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-brand-panel/60 border border-brand-border">
+<span class="w-6 h-6 rounded-md bg-brand-yellow/15 text-brand-yellow flex items-center justify-center font-bold text-sm shrink-0">
+                ✓
+              </span>
+<span class="text-sm font-bold text-white">Signature house sauces</span>
+</div>
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-brand-panel/60 border border-brand-border">
+<span class="w-6 h-6 rounded-md bg-brand-yellow/15 text-brand-yellow flex items-center justify-center font-bold text-sm shrink-0">
+                ✓
+              </span>
+<span class="text-sm font-bold text-white">No boring bites</span>
+</div>
+</div>
+<!-- Key Metrics Counter Row -->
+<div class="flex items-center gap-8 md:gap-12 w-full pt-6 border-t border-brand-border">
+<div>
+<p class="text-3xl font-black text-brand-yellow">50k+</p>
+<p class="text-xs font-semibold text-brand-muted uppercase tracking-wider mt-1">Happy Customers</p>
+</div>
+<div class="h-8 w-px bg-brand-border"></div>
+<div>
+<p class="text-3xl font-black text-brand-yellow">100%</p>
+<p class="text-xs font-semibold text-brand-muted uppercase tracking-wider mt-1">Fresh Angus</p>
+</div>
+<div class="h-8 w-px bg-brand-border"></div>
+<div>
+<p class="text-3xl font-black text-brand-yellow">4.9★</p>
+<p class="text-xs font-semibold text-brand-muted uppercase tracking-wider mt-1">Average Rating</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Brand Story Section -->
+<!-- BEGIN: Location & Contact Section -->
+<section class="py-28 bg-brand-panel relative" data-purpose="location-contact-section" id="locations">
+<div class="max-w-[1180px] mx-auto px-6">
+<!-- Section Header -->
+<div class="text-center max-w-xl mx-auto mb-16">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-bg border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-3">
+<span>● COME HUNGRY</span>
+</div>
+<h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white mb-3">
+          Let’s Connect
+        </h2>
+<p class="text-brand-muted text-base">
+          Find us in Sharjah, grab a seat, chat with the crew, and make a glorious mess.
+        </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<!-- Left: Location Information Card -->
+<div class="lg:col-span-5 bg-brand-bg border border-brand-border rounded-3xl p-8 flex flex-col justify-between shadow-2xl">
+<div>
+<!-- Branch Badge -->
+<div class="flex items-center justify-between mb-6">
+<span class="px-3.5 py-1 rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30 text-xs font-extrabold uppercase tracking-wider">
+                Flagship Store
+              </span>
+<span class="flex items-center gap-2 text-xs font-bold text-emerald-400">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Open Now
+              </span>
+</div>
+<!-- Address and Details -->
+<h3 class="text-2xl font-black uppercase text-white mb-2">Bunzai Burgers — Muwaileh</h3>
+<p class="text-brand-muted text-sm leading-relaxed mb-6" id="storeAddressText">
+              Muwaileh Commercial, University City Road, Sharjah, United Arab Emirates
+            </p>
+<div class="p-4 rounded-2xl bg-brand-panelLight/60 border border-brand-border mb-6">
+<p class="text-xs uppercase font-bold text-brand-yellow tracking-wider mb-1">Operating Hours</p>
+<p class="text-sm font-semibold text-white">Daily: 11:00 AM — 01:00 AM</p>
+<p class="text-xs text-brand-muted mt-1">Dine-in, Takeaway &amp; Late Night Drive-thru</p>
+</div>
+<!-- Contact Badges -->
+<div class="space-y-3 mb-8">
+<a class="flex items-center gap-3.5 p-3 rounded-xl bg-brand-panel hover:bg-brand-panelLight border border-brand-border transition-colors group" href="https://wa.me/9719876543210" rel="noopener noreferrer" target="_blank">
+<div class="w-9 h-9 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform">
+                  ✆
+                </div>
+<div>
+<p class="text-[11px] uppercase tracking-wider text-slate-400 font-bold">WhatsApp Direct</p>
+<p class="text-sm font-extrabold text-white group-hover:text-brand-yellow transition-colors">+971 98765 43210</p>
+</div>
+</a>
+<a class="flex items-center gap-3.5 p-3 rounded-xl bg-brand-panel hover:bg-brand-panelLight border border-brand-border transition-colors group" href="https://instagram.com" rel="noopener noreferrer" target="_blank">
+<div class="w-9 h-9 rounded-lg bg-pink-500/15 text-pink-400 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform">
+                  📷
+                </div>
+<div>
+<p class="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Instagram</p>
+<p class="text-sm font-extrabold text-white group-hover:text-brand-yellow transition-colors">@bunzai.burgers</p>
+</div>
+</a>
+</div>
+</div>
+<!-- Buttons -->
+<div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-brand-border/60">
+<a class="flex-1 inline-flex items-center justify-center gap-2 bg-brand-yellow hover:bg-brand-yellowHover text-black text-xs font-black uppercase tracking-wider py-3.5 px-5 rounded-full transition-all" href="https://maps.google.com" rel="noopener noreferrer" target="_blank">
+<span>Open In Maps ↗</span>
+</a>
+<button class="inline-flex items-center justify-center gap-2 bg-brand-panel hover:bg-brand-panelLight text-white border border-brand-border text-xs font-bold uppercase tracking-wider py-3.5 px-5 rounded-full transition-all" id="copyAddressBtn" type="button">
+<span id="copyBtnLabel">Copy Address</span>
+</button>
+</div>
+</div>
+<!-- Right: Stylized Dark Night Mode Map Graphic Container -->
+<div class="lg:col-span-7 bg-brand-bg border border-brand-border rounded-3xl p-6 relative overflow-hidden min-h-[420px] flex items-center justify-center shadow-2xl">
+<!-- Abstract Stylized Street Grid Canvas Background -->
+<div class="absolute inset-0 opacity-30 pointer-events-none">
+<!-- SVG Map Vector Elements -->
+<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="60" id="mapGrid" patternunits="userSpaceOnUse" width="60">
+<path d="M 60 0 L 0 0 0 60" fill="none" stroke="#253858" stroke-width="1"></path>
+</pattern>
+</defs>
+<rect fill="url(#mapGrid)" height="100%" width="100%"></rect>
+<!-- Diagonal expressway lines -->
+<path d="M -50 400 L 900 -50" fill="none" stroke="#FFD21C" stroke-opacity="0.25" stroke-width="4"></path>
+<path d="M -20 180 L 800 450" fill="none" stroke="#3A5075" stroke-width="3"></path>
+<path d="M 250 -50 L 350 600" fill="none" stroke="#3A5075" stroke-width="2.5"></path>
+</svg>
+</div>
+<!-- Pulsing Map Pin Mark -->
+<div class="relative z-10 flex flex-col items-center">
+<!-- Radiating Beacon Glow -->
+<div class="w-20 h-20 rounded-full bg-brand-yellow/20 animate-ping absolute -top-4 pointer-events-none"></div>
+<!-- Pin Badge -->
+<div class="bg-brand-yellow text-black font-black px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 z-10 border-2 border-white">
+<span class="w-3 h-3 rounded-full bg-black"></span>
+<span class="text-xs uppercase tracking-wider">Bunzai Burgers Muwaileh</span>
+</div>
+<!-- Triangle pin needle tip -->
+<div class="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-white -mt-0.5"></div>
+<!-- City Subtitle Tag -->
+<div class="mt-4 px-3 py-1 rounded-full bg-brand-panel/90 backdrop-blur-md border border-brand-border text-[11px] font-bold text-brand-muted uppercase tracking-widest">
+              Sharjah • United Arab Emirates
+            </div>
+</div>
+<!-- Decorative Corner Map Compass / Watermark -->
+<div class="absolute bottom-6 right-6 text-brand-muted/40 font-mono text-[11px] tracking-widest uppercase">
+            25.3053° N, 55.4526° E
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Location & Contact Section -->
+<!-- BEGIN: Minimal Modern Footer -->
+<footer class="bg-brand-bg border-t border-brand-border py-12" data-purpose="page-footer">
+<div class="max-w-[1180px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+<!-- Brand Logo in Footer -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-brand-yellow flex items-center justify-center font-black text-black text-lg">
+          B
+        </div>
+<span class="font-extrabold tracking-wider text-base uppercase text-white">
+          Bunzai Burgers
+        </span>
+</div>
+<!-- Slogan -->
+<div class="text-center">
+<span class="font-script text-2xl text-brand-yellow">Good Food. Good Vibes.</span>
+</div>
+<!-- Social & Legal Links -->
+<div class="flex flex-col sm:flex-row items-center gap-6 text-xs text-brand-muted">
+<div class="flex items-center gap-4">
+<a class="hover:text-brand-yellow transition-colors font-semibold" href="#">Instagram</a>
+<span>•</span>
+<a class="hover:text-brand-yellow transition-colors font-semibold" href="#">TikTok</a>
+<span>•</span>
+<a class="hover:text-brand-yellow transition-colors font-semibold" href="#">WhatsApp</a>
+</div>
+<p>© 2026 Bunzai Burgers. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- END: Minimal Modern Footer -->
+<!-- BEGIN: Interactive Story Video Modal -->
+<div aria-labelledby="storyModalTitle" aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" id="storyModal" role="dialog">
+<div class="relative w-full max-w-2xl bg-brand-panel border border-brand-border rounded-3xl p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300" id="storyModalBox">
+<!-- Close Button -->
+<button class="absolute top-5 right-5 w-9 h-9 rounded-full bg-brand-bg hover:bg-brand-panelLight text-brand-muted hover:text-white flex items-center justify-center text-lg font-bold border border-brand-border transition-colors" id="closeStoryModalBtn" type="button">
+        ✕
+      </button>
+<!-- Modal Header -->
+<div class="mb-6">
+<span class="text-brand-yellow text-xs font-bold uppercase tracking-wider">Bunzai Origins</span>
+<h3 class="text-2xl sm:text-3xl font-black uppercase text-white mt-1" id="storyModalTitle">The Craft Behind The Smash</h3>
+</div>
+<!-- Simulated Video Container -->
+<div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-brand-bg border border-brand-border flex items-center justify-center mb-6">
+<img alt="Bunzai Craft Burger Video Preview" class="w-full h-full object-cover opacity-60" src="./assets/hero-burger.jpg" data-remote="https://lh3.googleusercontent.com/aida-public/AB6AXuBfjwRd5cvykPBguRjQtFbMB8XvKdoe21CawzKmjqGAZBt6izFwMHC_JVWxAFL8WtOmqkweQo5ByxxdCyUDumTz1amv4gjC_qqqr3TRJsmVWtoAcOffu-c3Upe8VmmYwbK2L4zMSq2SYttJtBMCETecB76OrgHC-XTxjWPsAteLB4pPi-QDiH0-d_78PFaRcZOEuno6tSrP4Fa9OmhxHHAG-ou0r-TpS3fWI78ubF2yIfFkLCN9rp9TrQ" onerror="if(this.dataset.remote){this.src=this.dataset.remote;this.dataset.remote=''}else{this.onerror=null;this.style.visibility='hidden'}"/>
+<!-- Big Play Button Simulation -->
+<div class="absolute w-16 h-16 rounded-full bg-brand-yellow text-black flex items-center justify-center font-black shadow-2xl pl-1 hover:scale-110 transition-transform cursor-pointer">
+          ▶
+        </div>
+</div>
+<p class="text-brand-muted text-sm leading-relaxed mb-4">
+        Watch how our chefs balance extreme 600°F cast iron heat with high-fat Angus beef to produce that unmistakable lace crust. Topped with signature glaze and served hot.
+      </p>
+<div class="flex justify-end">
+<button class="px-6 py-2.5 rounded-full bg-brand-yellow text-black text-xs font-black uppercase tracking-wider hover:bg-brand-yellowHover transition-colors" id="dismissStoryModalBtn" type="button">
+          Got It, Let's Eat
+        </button>
+</div>
+</div>
+</div>
+<!-- END: Interactive Story Video Modal -->
+<!-- BEGIN: Interactive Toast Notification -->
+<div class="fixed bottom-6 right-6 z-50 bg-brand-yellow text-black px-5 py-3.5 rounded-2xl shadow-2xl font-black text-xs uppercase tracking-wider flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none" id="toastNotification">
+<span class="w-6 h-6 rounded-full bg-black text-brand-yellow flex items-center justify-center text-xs">✓</span>
+<span id="toastMessage">Added to your Bunzai order ✦</span>
+</div>
+<!-- END: Interactive Toast Notification -->
+<!-- BEGIN: Client Interactivity Scripts -->
+<script data-purpose="menu-filtering">
+    // Menu Category Filter logic
+    const filterButtons = document.querySelectorAll('.menu-tab-btn');
+    const menuCards = document.querySelectorAll('.menu-card');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active filter button styling
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-brand-yellow', 'text-black', 'active');
+          btn.classList.add('text-brand-muted');
+        });
+        button.classList.add('bg-brand-yellow', 'text-black', 'active');
+        button.classList.remove('text-brand-muted');
+
+        const category = button.getAttribute('data-filter');
+
+        // Filter cards smoothly
+        menuCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          if (category === 'all' || cardCategory === category) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+<script data-purpose="interactive-toasts">
+    // Add to order toast feedback
+    const addButtons = document.querySelectorAll('.add-to-order-btn');
+    const toast = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+    let toastTimeout;
+
+    addButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const itemName = button.getAttribute('data-name') || 'Item';
+        toastMessage.textContent = `${itemName} added to your Bunzai order ✦`;
+        
+        // Show Toast
+        toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+        }, 3200);
+      });
+    });
+  </script>
+<script data-purpose="story-modal-handler">
+    // Watch Our Story Modal behavior
+    const storyModal = document.getElementById('storyModal');
+    const storyModalBox = document.getElementById('storyModalBox');
+    const openStoryModalBtn = document.getElementById('openStoryModalBtn');
+    const closeStoryModalBtn = document.getElementById('closeStoryModalBtn');
+    const dismissStoryModalBtn = document.getElementById('dismissStoryModalBtn');
+
+    function openModal() {
+      storyModal.classList.remove('opacity-0', 'pointer-events-none');
+      storyModalBox.classList.remove('scale-95');
+      storyModalBox.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      storyModal.classList.add('opacity-0', 'pointer-events-none');
+      storyModalBox.classList.add('scale-95');
+      storyModalBox.classList.remove('scale-100');
+      document.body.style.overflow = 'auto';
+    }
+
+    openStoryModalBtn.addEventListener('click', openModal);
+    closeStoryModalBtn.addEventListener('click', closeModal);
+    dismissStoryModalBtn.addEventListener('click', closeModal);
+
+    // Close on click outside modal content box
+    storyModal.addEventListener('click', (e) => {
+      if (e.target === storyModal) {
+        closeModal();
+      }
+    });
+  </script>
+<script data-purpose="copy-address-clipboard">
+    // Copy address to clipboard functionality
+    const copyAddressBtn = document.getElementById('copyAddressBtn');
+    const copyBtnLabel = document.getElementById('copyBtnLabel');
+    const storeAddressText = document.getElementById('storeAddressText');
+
+    copyAddressBtn.addEventListener('click', () => {
+      const address = storeAddressText.textContent.trim();
+      navigator.clipboard.writeText(address).then(() => {
+        copyBtnLabel.textContent = 'Copied to clipboard! ✓';
+        copyAddressBtn.classList.add('border-brand-yellow', 'text-brand-yellow');
+        
+        setTimeout(() => {
+          copyBtnLabel.textContent = 'Copy Address';
+          copyAddressBtn.classList.remove('border-brand-yellow', 'text-brand-yellow');
+        }, 2500);
+      }).catch(() => {
+        copyBtnLabel.textContent = 'Copied!';
+      });
+    });
+  </script>
+<!-- END: Client Interactivity Scripts -->
+<script data-purpose="scroll-burger">
+/* Bunzai scroll burger: a fixed canvas that draws the 3D burger into the craft section only.
+   It fades in as the section arrives, explodes & rejoins while the section is pinned,
+   then scrolls away with it. The hero and menu cards keep their photos. */
+(() => {
+  const FIRST = 84, LAST = 239;                    // frames 85-240: explode & rejoin (frames 1-84 are the 360° turn, unused here)
+  const PATH = i => `./animations/burger/frames/frame_${String(i + 1).padStart(5, '0')}.webp`;
+  const BOX = { x: 396, y: 26, w: 482, h: 654 };  // burger bounds inside the 1280x720 frames
+
+  const canvas = document.getElementById('burgerCanvas');
+  const ctx = canvas.getContext('2d');
+  const craft = document.getElementById('craft');
+  const slot = document.getElementById('craftBurgerSlot');
+  const cards = [...document.querySelectorAll('[data-layer-card]')];
+  const progressBar = document.getElementById('craftProgress');
+
+  const frames = [];
+  function load(i) {
+    return new Promise(res => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => { frames[i] = img; res(); };
+      img.onerror = res;
+      img.src = PATH(i);
+    });
+  }
+  (async () => {
+    await load(FIRST);
+    for (let k = FIRST + 1; k <= LAST; k += 12) {
+      const batch = [];
+      for (let i = k; i < Math.min(k + 12, LAST + 1); i++) batch.push(load(i));
+      await Promise.all(batch);
+    }
+  })();
+
+  function nearest(i) {
+    i = Math.max(FIRST, Math.min(LAST, Math.round(i)));
+    for (let d = 0; d <= LAST - FIRST; d++) {
+      if (frames[i - d]) return frames[i - d];
+      if (frames[i + d]) return frames[i + d];
+    }
+    return null;
+  }
+
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const ease = t => t * t * (3 - 2 * t);
+
+  let dpr = 1;
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(innerWidth * dpr);
+    canvas.height = Math.round(innerHeight * dpr);
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  let shown = FIRST;
+
+  function tick() {
+    const H = innerHeight;
+    const c = craft.getBoundingClientRect();
+    const fade = ease(clamp((H * 0.8 - c.top) / (H * 0.8)));     // fade in as the section rises into view
+    const p = clamp(-c.top / ((c.height - H) || 1));              // progress while the stage is pinned
+    const a = clamp((p - 0.08) / 0.84);                           // hold assembled briefly, then animate
+    const target = FIRST + a * (LAST - FIRST);
+    shown += (target - shown) * 0.35;                             // smooth out fast scrolling
+
+    const explode = Math.sin(a * Math.PI);                        // layer cards fade in as the burger opens up
+    cards.forEach((card, i) => {
+      const v = clamp((explode - 0.12 - i * 0.07) * 3.2);
+      card.style.opacity = v.toFixed(3);
+      card.style.transform = `translateY(${(1 - v) * 18}px)`;
+    });
+    if (progressBar) progressBar.style.transform = `scaleX(${a})`;
+
+    draw(slot.getBoundingClientRect(), shown, fade);
+    requestAnimationFrame(tick);
+  }
+
+  function draw(r, frameIndex, alpha) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (alpha <= 0.01 || r.width < 2 || r.top > innerHeight || r.bottom < 0) return;
+    const img = nearest(frameIndex);
+    if (!img) return;
+    const s = Math.min(r.width * 0.92 / BOX.w, r.height * 0.92 / BOX.h);
+    const dx = r.left + r.width / 2 - (BOX.x + BOX.w / 2) * s;
+    const dy = r.top + r.height / 2 - (BOX.y + BOX.h / 2) * s;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(img, dx, dy, 1280 * s, 720 * s);
+  }
+
+  requestAnimationFrame(tick);
+})();
+</script>
+</body></html>
