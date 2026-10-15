@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<base href="/"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Page Not Found — Bunzai Burgers</title>
+<meta name="description" content="This page could not be found."/>
+<meta name="theme-color" content="#050B17"/>
+<link rel="icon" type="image/svg+xml" href="./assets/bunzai-favicon.svg?v=1"/>
+<!-- Google Fonts for Display & Body Typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with Plugins + shared Bunzai theme -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="./assets/site/tailwind-config.js"></script>
+<link rel="stylesheet" href="./assets/site/site.css"/>
+</head>
+<body class="font-sans antialiased selection:bg-brand-yellow selection:text-black" data-page="404">
+<!-- BEGIN: Sticky Header (rendered by assets/site/layout.js) -->
+<div data-site-header></div>
+<!-- END: Sticky Header -->
+<main>
+<!-- BEGIN: Not Found -->
+<section class="relative py-28 md:py-36 overflow-hidden" data-purpose="not-found">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] glow-yellow rounded-full pointer-events-none -z-10"></div>
+<div class="max-w-xl mx-auto px-6 text-center flex flex-col items-center">
+<h1 class="text-[120px] sm:text-[160px] font-black leading-none text-brand-yellow tracking-tight"><span class="sr-only">Page not found — </span>404</h1>
+<p class="font-script text-4xl text-white -mt-2 mb-4 -rotate-2">Lost the bun?</p>
+<p class="text-brand-muted mb-10">This page slipped off the grill. Let's get you back to the good stuff.</p>
+<div class="flex flex-wrap justify-center gap-4">
+<a class="inline-flex items-center justify-center gap-3 bg-brand-yellow hover:bg-brand-yellowHover text-black text-sm font-black uppercase tracking-wider px-8 py-4 rounded-full shadow-xl shadow-brand-yellow/30 hover:scale-105 transition-all" href="bunzai-burger.html"><span>Back Home</span><svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+<a class="inline-flex items-center justify-center gap-3 bg-brand-panel hover:bg-brand-panelLight text-white border border-brand-border hover:border-brand-yellow/50 text-sm font-bold uppercase tracking-wider px-7 py-4 rounded-full transition-all" href="menu.html">View Menu</a>
+</div>
+</div>
+</section>
+<!-- END: Not Found -->
+</main>
+<!-- BEGIN: Minimal Modern Footer (rendered by assets/site/layout.js) -->
+<div data-site-footer></div>
+<!-- END: Minimal Modern Footer -->
+<!-- BEGIN: Client Interactivity Scripts -->
+<script src="./assets/site/menu-data.js"></script>
+<script src="./assets/site/layout.js"></script>
+<!-- END: Client Interactivity Scripts -->
+</body></html>

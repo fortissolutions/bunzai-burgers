@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Menu Item — Bunzai Burgers</title>
+<meta name="description" content="Ingredients, allergens and price for a Bunzai Burgers menu item."/>
+<meta name="theme-color" content="#050B17"/>
+<link rel="icon" type="image/svg+xml" href="./assets/bunzai-favicon.svg?v=1"/>
+<!-- Google Fonts for Display & Body Typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with Plugins + shared Bunzai theme -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="./assets/site/tailwind-config.js"></script>
+<link rel="stylesheet" href="./assets/site/site.css"/>
+</head>
+<body class="font-sans antialiased selection:bg-brand-yellow selection:text-black" data-page="product">
+<!-- BEGIN: Sticky Header (rendered by assets/site/layout.js) -->
+<div data-site-header></div>
+<!-- END: Sticky Header -->
+<main>
+<!-- BEGIN: Product Detail (rendered from assets/site/menu-data.js) -->
+<section class="relative pt-10 pb-20 md:pt-14 overflow-hidden" data-purpose="product-detail" id="product">
+<div class="absolute -top-20 right-0 w-[520px] h-[520px] glow-yellow rounded-full pointer-events-none -z-10"></div>
+<div class="max-w-[1180px] mx-auto px-6" id="productRoot">
+<p class="text-brand-muted text-sm py-24 text-center">Loading…</p>
+</div>
+</section>
+<!-- END: Product Detail -->
+<!-- BEGIN: Related Items -->
+<section class="py-20 bg-brand-panel hidden" data-purpose="related-items" id="related">
+<div class="max-w-[1180px] mx-auto px-6">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+<div>
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-bg border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-3"><span>● PAIRS WELL WITH</span></div>
+<h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">You Might Also Like</h2>
+</div>
+<a class="text-sm font-extrabold uppercase tracking-wider text-brand-yellow hover:text-white transition-colors" href="menu.html">Full menu →</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="relatedGrid"></div>
+</div>
+</section>
+<!-- END: Related Items -->
+</main>
+<!-- BEGIN: Minimal Modern Footer (rendered by assets/site/layout.js) -->
+<div data-site-footer></div>
+<!-- END: Minimal Modern Footer -->
+<!-- BEGIN: Client Interactivity Scripts -->
+<script src="./assets/site/menu-data.js"></script>
+<script src="./assets/site/layout.js"></script>
+<script data-purpose="product-rendering">
+    // Renders one menu item from ?item=<slug>
+    (function () {
+      const root = document.getElementById('productRoot');
+      const slug = new URLSearchParams(location.search).get('item');
+      const item = slug ? Bunzai.findItem(slug) : null;
+      const esc = Bunzai.escapeHTML;
+
+      if (!item) {
+        document.title = 'Item not found — Bunzai Burgers';
+        root.innerHTML = `
+          <div class="max-w-xl mx-auto text-center py-20">
+            <p class="font-script text-4xl text-brand-yellow mb-2">Hmm, not on the grill.</p>
+            <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white mb-4">Item Not Found</h1>
+            <p class="text-brand-muted mb-8">We couldn't find that item. It may have been renamed or taken off the menu.</p>
+            <a class="inline-flex items-center justify-center gap-3 bg-brand-yellow hover:bg-brand-yellowHover text-black text-sm font-black uppercase tracking-wider px-8 py-4 rounded-full shadow-xl shadow-brand-yellow/30 hover:scale-105 transition-all" href="menu.html"><span>Back To Menu</span><svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+          </div>`;
+        return;
+      }
+
+      document.title = `${item.name} — Bunzai Burgers`;
+      const category = Bunzai.CATEGORY_LABEL[item.category];
+      const ingredients = item.ingredients.map((name) => `
+        <li class="flex items-center gap-3 p-3 rounded-xl bg-brand-panel/60 border border-brand-border">
+          <span class="w-6 h-6 rounded-md bg-brand-yellow/15 text-brand-yellow flex items-center justify-center font-bold text-sm shrink-0">✓</span>
+          <span class="text-sm font-bold text-white">${esc(name)}</span>
+        </li>`).join('');
+      const allergens = item.allergens.length
+        ? item.allergens.map((a) => `<span class="px-3 py-1 rounded-full bg-brand-panel border border-brand-border text-xs font-bold text-brand-muted">${esc(a)}</span>`).join('')
+        : '<span class="text-sm text-brand-muted">None of the major allergens.</span>';
+
+      root.innerHTML = `
+        <nav aria-label="Breadcrumb" class="text-xs font-bold uppercase tracking-wider text-brand-muted mb-8">
+          <a class="hover:text-brand-yellow transition-colors" href="bunzai-burger.html">Home</a> <span class="text-slate-600">/</span>
+          <a class="hover:text-brand-yellow transition-colors" href="menu.html">Menu</a> <span class="text-slate-600">/</span>
+          <span class="text-white">${esc(item.name)}</span>
+        </nav>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div class="lg:col-span-6">
+            <div class="rounded-3xl bg-brand-panel border border-brand-border p-4 shadow-2xl">${Bunzai.mediaHTML(item, { large: true, hoverZoom: false })}</div>
+          </div>
+          <div class="lg:col-span-6 flex flex-col items-start">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-4">● ${category}</span>
+            <h1 class="text-5xl sm:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white mb-4">${esc(item.name)}</h1>
+            <p class="text-3xl font-black text-brand-yellow mb-6">${Bunzai.formatPrice(item.price)}</p>
+            <p class="text-brand-muted text-base md:text-lg leading-relaxed mb-8">${esc(item.description)}</p>
+            <h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">What's inside</h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-8">${ingredients}</ul>
+            <h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">Allergens</h2>
+            <div class="flex flex-wrap gap-2 mb-10">${allergens}</div>
+            <div class="flex flex-wrap items-center gap-4 w-full pt-8 border-t border-brand-border">
+              <div class="flex items-center gap-1 bg-brand-panel border border-brand-border rounded-full p-1.5">
+                <button class="w-10 h-10 rounded-full hover:bg-brand-panelLight text-white font-black text-lg" type="button" aria-label="Decrease quantity" data-step="-1">−</button>
+                <span class="w-10 text-center font-black text-white" id="qtyValue" aria-live="polite">1</span>
+                <button class="w-10 h-10 rounded-full hover:bg-brand-panelLight text-white font-black text-lg" type="button" aria-label="Increase quantity" data-step="1">+</button>
+              </div>
+              <button class="add-to-order-btn flex-1 sm:flex-none inline-flex items-center justify-center gap-3 bg-brand-yellow hover:bg-brand-yellowHover text-black text-sm font-black uppercase tracking-wider px-8 py-4 rounded-full shadow-xl shadow-brand-yellow/30 hover:scale-105 transition-all" data-slug="${item.slug}" data-qty="1" type="button" id="addToOrderBtn">
+                <span>Add To Order</span><svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </button>
+              <a class="text-sm font-extrabold uppercase tracking-wider text-brand-yellow hover:text-white transition-colors" href="order.html">View order →</a>
+            </div>
+          </div>
+        </div>`;
+
+      // Quantity stepper feeds the shared add-to-order handler via data-qty.
+      let qty = 1;
+      const qtyValue = document.getElementById('qtyValue');
+      const addBtn = document.getElementById('addToOrderBtn');
+      root.querySelectorAll('[data-step]').forEach((btn) => btn.addEventListener('click', () => {
+        qty = Math.min(20, Math.max(1, qty + Number(btn.dataset.step)));
+        qtyValue.textContent = String(qty);
+        addBtn.dataset.qty = String(qty);
+      }));
+
+      const related = item.related.map(Bunzai.findItem).filter(Boolean);
+      if (related.length) {
+        Bunzai.renderMenuGrid(document.getElementById('relatedGrid'), related);
+        document.getElementById('related').classList.remove('hidden');
+      }
+    })();
+  </script>
+<!-- END: Client Interactivity Scripts -->
+</body></html>

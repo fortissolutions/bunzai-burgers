@@ -1,0 +1,36 @@
+/* Shared custom styling for every Bunzai page (from the code.html design template). */
+body {
+  background-color: #050B17;
+  color: #F8FAFC;
+  overflow-x: hidden;
+}
+
+/* Reserve the sticky header's height so the page doesn't jump while layout.js renders it. */
+[data-site-header]:empty { height: 80px; }
+
+/* Radial lighting glow utility */
+.glow-yellow {
+  background: radial-gradient(circle, rgba(255, 210, 28, 0.18) 0%, rgba(5, 11, 23, 0) 70%);
+}
+
+.glow-subtle {
+  background: radial-gradient(circle, rgba(16, 28, 50, 0.7) 0%, rgba(5, 11, 23, 0) 75%);
+}
+
+/* Offset in-page anchors below the sticky header */
+[id] { scroll-margin-top: 96px; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050B17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1B2944;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FFD21C;
+}

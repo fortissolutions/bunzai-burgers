@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Menu — Bunzai Burgers</title>
+<meta name="description" content="The full Bunzai Burgers menu: signature smash burgers, loaded sides and draft cola, with prices in AED."/>
+<meta name="theme-color" content="#050B17"/>
+<link rel="icon" type="image/svg+xml" href="./assets/bunzai-favicon.svg?v=1"/>
+<!-- Google Fonts for Display & Body Typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with Plugins + shared Bunzai theme -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="./assets/site/tailwind-config.js"></script>
+<link rel="stylesheet" href="./assets/site/site.css"/>
+</head>
+<body class="font-sans antialiased selection:bg-brand-yellow selection:text-black" data-page="menu">
+<!-- BEGIN: Sticky Header (rendered by assets/site/layout.js) -->
+<div data-site-header></div>
+<!-- END: Sticky Header -->
+<main>
+<!-- BEGIN: Page Hero -->
+<section class="relative pt-14 pb-12 md:pt-20 md:pb-16 overflow-hidden" data-purpose="page-hero">
+<div class="absolute -top-20 right-0 w-[520px] h-[520px] glow-yellow rounded-full pointer-events-none -z-10"></div>
+<div class="absolute top-10 left-10 w-[420px] h-[420px] glow-subtle rounded-full pointer-events-none -z-10"></div>
+<div class="max-w-[1180px] mx-auto px-6 flex flex-col items-start">
+<nav aria-label="Breadcrumb" class="text-xs font-bold uppercase tracking-wider text-brand-muted mb-6"><a class="hover:text-brand-yellow transition-colors" href="bunzai-burger.html">Home</a> <span class="text-slate-600">/</span> <span class="text-white">Menu</span></nav>
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-4">
+<span>● Made To Crave</span>
+</div>
+<h1 class="text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white mb-5 max-w-4xl">
+          The Full <span class="text-brand-yellow">Menu.</span>
+        </h1>
+<p class="text-lg text-brand-muted max-w-2xl leading-relaxed">
+          Signature smashes, loaded sides and ice-cold draft cola. Tap any item for ingredients and allergens, or hit + to add it to your order.
+        </p>
+</div>
+</section>
+<!-- END: Page Hero -->
+<!-- BEGIN: Menu Grid -->
+<section class="pb-28" data-purpose="menu-section" id="menu">
+<div class="max-w-[1180px] mx-auto px-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
+<div class="flex flex-wrap items-center gap-2 bg-brand-panel p-1.5 rounded-full border border-brand-border self-start" role="tablist">
+<button aria-selected="true" class="menu-tab-btn active bg-brand-yellow text-black px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="all" role="tab">All</button>
+<button aria-selected="false" class="menu-tab-btn text-brand-muted hover:text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="burgers" role="tab">Burgers</button>
+<button aria-selected="false" class="menu-tab-btn text-brand-muted hover:text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="sides" role="tab">Sides</button>
+<button aria-selected="false" class="menu-tab-btn text-brand-muted hover:text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="drinks" role="tab">Drinks</button>
+</div>
+<p class="text-xs uppercase font-bold tracking-wider text-brand-muted">All prices in AED · Inclusive of VAT</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="menuCardsGrid"></div>
+<div class="mt-14 p-6 sm:p-8 rounded-3xl bg-brand-panel border border-brand-border flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div>
+<p class="text-xs uppercase font-black tracking-wider text-brand-yellow">Allergy note</p>
+<p class="text-sm text-brand-muted mt-1 max-w-2xl">Our kitchen handles gluten, dairy, egg and mustard. Allergens are listed on each item's page — ask the crew if you need anything adjusted.</p>
+</div>
+<a class="inline-flex items-center justify-center gap-3 bg-brand-yellow hover:bg-brand-yellowHover text-black text-sm font-black uppercase tracking-wider px-8 py-4 rounded-full shadow-xl shadow-brand-yellow/30 hover:scale-105 transition-all shrink-0" href="order.html"><span>Review Order</span><svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+</div>
+</div>
+</section>
+<!-- END: Menu Grid -->
+</main>
+<!-- BEGIN: Minimal Modern Footer (rendered by assets/site/layout.js) -->
+<div data-site-footer></div>
+<!-- END: Minimal Modern Footer -->
+<!-- BEGIN: Client Interactivity Scripts -->
+<script src="./assets/site/menu-data.js"></script>
+<script src="./assets/site/layout.js"></script>
+<script data-purpose="menu-rendering">
+    // Full menu grid + category filter, rendered from the shared menu data
+    Bunzai.renderMenuGrid(document.getElementById('menuCardsGrid'), Bunzai.MENU, 'bg-brand-panel');
+    Bunzai.initMenuFilter(document.getElementById('menu'));
+  </script>
+<!-- END: Client Interactivity Scripts -->
+</body></html>

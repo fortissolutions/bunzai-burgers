@@ -5,7 +5,7 @@ const http = require('http');
 const fs   = require('fs');
 const path = require('path');
 
-const PORT = 8080;
+const PORT = Number(process.env.PORT) || 8080;
 const ROOT = __dirname;
 
 const MIME = {
@@ -48,12 +48,19 @@ const server = http.createServer((req, res) => {
   }
 
   const filePath = path.join(ROOT, url);
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+  const insideRoot = filePath.startsWith(ROOT + path.sep);
+  if (insideRoot && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     return serveFile(filePath, res);
   }
 
-  res.writeHead(404, { 'Content-Type': 'text/plain' });
-  res.end('404 Not Found');
+  fs.readFile(path.join(ROOT, '404.html'), (err, page) => {
+    if (err) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      return res.end('404 Not Found');
+    }
+    res.writeHead(404, { 'Content-Type': MIME['.html'] });
+    res.end(page);
+  });
 });
 
 server.listen(PORT, '0.0.0.0', () => {
