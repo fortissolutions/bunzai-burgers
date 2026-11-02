@@ -3,6 +3,8 @@
 // <div data-site-header></div> / <div data-site-footer></div> placeholders.
 (function () {
   const MENU = window.BUNZAI_MENU || [];
+  const CATEGORIES = window.BUNZAI_CATEGORIES || [];
+  const ADDONS = window.BUNZAI_ADDONS || [];
   const CART_KEY = 'bunzai-cart';
   const WHATSAPP_NUMBER = '9719876543210';
   const LINKS = {
@@ -183,15 +185,15 @@
   function mediaHTML(item, { large = false, hoverZoom = true } = {}) {
     const zoom = hoverZoom ? ' group-hover:scale-105 transition-transform duration-500' : '';
     const visual = item.image
-      ? `<img alt="${escapeHTML(item.name)}" class="w-full h-full object-cover${zoom}" src="${item.image}" loading="lazy"/>`
+      ? `<img alt="${escapeHTML(item.name)}" class="w-full h-full object-cover object-center${zoom}" src="${item.image}" loading="lazy"/>`
       : illustrationHTML(item.illustration, large);
     const badge = item.badge
       ? `<span class="absolute top-3 left-3 ${item.badge.className} text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">${escapeHTML(item.badge.label)}</span>`
       : '';
-    return `<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-brand-panelLight${item.image ? '' : ' flex items-center justify-center'}">${visual}${badge}</div>`;
+    return `<div class="relative w-full ${item.image ? 'aspect-[4/5]' : 'aspect-[4/3]'} rounded-2xl overflow-hidden bg-brand-panelLight${item.image ? '' : ' flex items-center justify-center'}">${visual}${badge}</div>`;
   }
 
-  const CATEGORY_LABEL = { burgers: 'Burgers', sides: 'Sides', drinks: 'Drinks' };
+  const CATEGORY_LABEL = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.label]));
 
   function addButtonHTML(item, extraClass = '') {
     return `<button aria-label="Add ${escapeHTML(item.name)} to order" class="add-to-order-btn w-10 h-10 rounded-full bg-brand-yellow hover:bg-brand-yellowHover text-black flex items-center justify-center font-black text-lg transition-transform active:scale-90 ${extraClass}" data-slug="${item.slug}" type="button">+</button>`;
@@ -219,6 +221,32 @@
   function renderMenuGrid(grid, items, bg) {
     if (!grid) return;
     grid.innerHTML = items.map((item) => menuCardHTML(item, bg)).join('');
+  }
+
+  // "All" plus one tab per category; initMenuFilter wires them up.
+  function menuTabsHTML() {
+    const tab = (filter, label, active) => `<button aria-selected="${active}" class="menu-tab-btn${active ? ' active bg-brand-yellow text-black' : ' text-brand-muted hover:text-white'} px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="${filter}" role="tab">${escapeHTML(label)}</button>`;
+    return [tab('all', 'All', true), ...CATEGORIES.map((c) => tab(c.id, c.label, false))].join('');
+  }
+
+  // ---------- Add-ons (display only, styled like the printed menu) ----------
+  function addOnsHTML(groups, bg = 'bg-brand-bg') {
+    return groups.map((group) => `
+<div class="rounded-3xl ${bg} border border-brand-border p-6 sm:p-7">
+  <div class="flex items-center justify-between gap-4 mb-4">
+    <h3 class="text-base font-black uppercase tracking-wider text-brand-yellow">${escapeHTML(group.title)}</h3>
+    <span class="text-xs font-black uppercase tracking-wider text-brand-yellow">AED</span>
+  </div>
+  <ul class="divide-y divide-brand-border/60">${group.items.map(([name, price]) => `
+    <li class="flex items-center justify-between gap-4 py-2.5"><span class="text-sm font-semibold text-white">${escapeHTML(name)}</span><span class="text-sm font-black text-white">+${price}</span></li>`).join('')}
+  </ul>
+</div>`).join('');
+  }
+
+  function renderAddOns(container, ids, bg) {
+    if (!container) return;
+    const groups = ids ? ADDONS.filter((group) => ids.includes(group.id)) : ADDONS;
+    container.innerHTML = addOnsHTML(groups, bg);
   }
 
   // Category filter tabs (from the template's menu-filtering script).
@@ -277,10 +305,10 @@
   }
 
   window.Bunzai = {
-    MENU, LINKS, WHATSAPP_NUMBER, CATEGORY_LABEL,
+    MENU, CATEGORIES, ADDONS, LINKS, WHATSAPP_NUMBER, CATEGORY_LABEL,
     escapeHTML, formatPrice, findItem, productHref,
     getCart, addToCart, setQty, clearCart, cartCount, cartLines,
-    showToast, mediaHTML, illustrationHTML, menuCardHTML, renderMenuGrid, addButtonHTML, initMenuFilter
+    showToast, mediaHTML, illustrationHTML, menuCardHTML, renderMenuGrid, addButtonHTML, menuTabsHTML, addOnsHTML, renderAddOns, initMenuFilter
   };
 
   mount();

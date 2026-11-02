@@ -3,7 +3,7 @@
 <html class="scroll-smooth" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Bunzai Burgers — Bigger. Bolder. Better.</title>
+<title>Bunzai Burgers — We Smash Better.</title>
 <meta name="description" content="Premium smash burgers in Muwaileh, Sharjah. Hand-smashed 100% prime Angus beef, triple cheddar and signature house glaze on toasted brioche."/>
 <meta name="theme-color" content="#050B17"/>
 <link rel="icon" type="image/svg+xml" href="./assets/bunzai-favicon.svg?v=1"/>
@@ -57,8 +57,8 @@
 </div>
 <!-- Massive Headline -->
 <h1 class="text-6xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.92] text-white mb-6">
-          Bigger<br/>
-          Bolder<br/>
+          We<br/>
+          Smash<br/>
 <span class="text-brand-yellow underline decoration-brand-yellow/30 underline-offset-8">Better.</span>
 </h1>
 <!-- Subheading Paragraph -->
@@ -109,7 +109,7 @@
 <!-- Golden circular backlight glow behind hero burger -->
 <div class="absolute inset-0 rounded-full bg-brand-yellow/15 blur-3xl -z-10 scale-90"></div>
 <!-- Hero Burger Main Photo -->
-<img alt="Bunzai Gourmet Smash Burger" class="w-full h-full object-contain rounded-3xl drop-shadow-[0_35px_45px_rgba(0,0,0,0.85)] filter contrast-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfjwRd5cvykPBguRjQtFbMB8XvKdoe21CawzKmjqGAZBt6izFwMHC_JVWxAFL8WtOmqkweQo5ByxxdCyUDumTz1amv4gjC_qqqr3TRJsmVWtoAcOffu-c3Upe8VmmYwbK2L4zMSq2SYttJtBMCETecB76OrgHC-XTxjWPsAteLB4pPi-QDiH0-d_78PFaRcZOEuno6tSrP4Fa9OmhxHHAG-ou0r-TpS3fWI78ubF2yIfFkLCN9rp9TrQ"/>
+<img alt="Bunzai Double Smash burger" class="w-full h-full object-cover rounded-3xl drop-shadow-[0_35px_45px_rgba(0,0,0,0.85)] filter contrast-105" src="./assets/menu/double-smash.webp"/>
 <!-- Floating Guarantee Stamp Badge -->
 <div class="absolute -bottom-2 -left-4 sm:left-0 bg-brand-panel/95 backdrop-blur-md border border-brand-yellow/40 p-4 rounded-2xl shadow-2xl flex items-center gap-3.5">
 <div class="w-12 h-12 rounded-xl bg-brand-yellow/15 border border-brand-yellow/30 flex items-center justify-center text-brand-yellow">
@@ -291,33 +291,26 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
 <div>
 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-bg border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-3">
-<span>● MADE TO CRAVE</span>
+<span>● FAN FAVOURITES</span>
 </div>
 <h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">
-            Our Signature Smashes &amp; Sides
+            Featured On The Grill
           </h2>
 <p class="text-brand-muted text-base mt-2">
-            Pick your mood. We’ll handle the sizzle, crisp edges, and mess.
+            The crew’s picks — smashed, crispy and loaded. We’ll handle the sizzle and the mess.
           </p>
 </div>
-<!-- Filter Tab Buttons -->
-<div class="flex flex-wrap items-center gap-2 bg-brand-bg p-1.5 rounded-full border border-brand-border self-start md:self-auto" role="tablist">
-<button aria-selected="true" class="menu-tab-btn active px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all bg-brand-yellow text-black" data-filter="all" role="tab">
-            All
-          </button>
-<button aria-selected="false" class="menu-tab-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-white transition-all" data-filter="burgers" role="tab">
-            Burgers
-          </button>
-<button aria-selected="false" class="menu-tab-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-white transition-all" data-filter="sides" role="tab">
-            Sides
-          </button>
-<button aria-selected="false" class="menu-tab-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-white transition-all" data-filter="drinks" role="tab">
-            Drinks
-          </button>
 </div>
-</div>
-<!-- 3-Column Desktop Grid for Menu Items (rendered from assets/site/menu-data.js) -->
+<!-- 3-Column Desktop Grid for Featured Items (rendered from assets/site/menu-data.js) -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="menuCardsGrid"></div>
+<!-- Add-Ons (rendered from assets/site/menu-data.js) -->
+<div class="mt-16">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+<h3 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">Make It Yours — <span class="text-brand-yellow">Add-Ons</span></h3>
+<p class="text-sm text-brand-muted">Mention them in your order notes.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start" id="homeAddOns"></div>
+</div>
 <div class="mt-12 flex justify-center">
 <a class="inline-flex items-center justify-center gap-3 bg-brand-bg hover:bg-brand-panelLight text-white border border-brand-border hover:border-brand-yellow/50 text-sm font-bold uppercase tracking-wider px-8 py-4 rounded-full transition-all" href="menu.html">
 <span>See Full Menu</span><span aria-hidden="true" class="text-brand-yellow">→</span>
@@ -584,10 +577,9 @@
 <script src="./assets/site/menu-data.js"></script>
 <script src="./assets/site/layout.js"></script>
 <script data-purpose="menu-rendering">
-    // Menu cards + category filter (cards rendered from the shared menu data)
-    const menuSection = document.getElementById('menu');
-    Bunzai.renderMenuGrid(document.getElementById('menuCardsGrid'), Bunzai.MENU);
-    Bunzai.initMenuFilter(menuSection);
+    // Featured cards + add-ons (rendered from the shared menu data)
+    Bunzai.renderMenuGrid(document.getElementById('menuCardsGrid'), Bunzai.MENU.filter((item) => item.featured));
+    Bunzai.renderAddOns(document.getElementById('homeAddOns'));
   </script>
 <script data-purpose="story-modal-handler">
     // Watch Our Story Modal behavior
