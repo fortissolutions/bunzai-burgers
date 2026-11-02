@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Menu Item — Bunzai Burgers</title>
-<meta name="description" content="Ingredients, allergens and price for a Bunzai Burgers menu item."/>
+<meta name="description" content="What's inside, add-ons and price for a Bunzai Burgers menu item."/>
 <meta name="theme-color" content="#050B17"/>
 <link rel="icon" type="image/svg+xml" href="./assets/bunzai-favicon.svg?v=1"/>
 <!-- Google Fonts for Display & Body Typography -->
@@ -77,9 +77,21 @@
           <span class="w-6 h-6 rounded-md bg-brand-yellow/15 text-brand-yellow flex items-center justify-center font-bold text-sm shrink-0">✓</span>
           <span class="text-sm font-bold text-white">${esc(name)}</span>
         </li>`).join('');
-      const allergens = item.allergens.length
-        ? item.allergens.map((a) => `<span class="px-3 py-1 rounded-full bg-brand-panel border border-brand-border text-xs font-bold text-brand-muted">${esc(a)}</span>`).join('')
-        : '<span class="text-sm text-brand-muted">None of the major allergens.</span>';
+      // Allergens and add-ons only render when the menu data provides them.
+      const allergens = item.allergens?.length
+        ? `<h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">Allergens</h2>
+            <div class="flex flex-wrap gap-2 mb-10">${item.allergens.map((a) => `<span class="px-3 py-1 rounded-full bg-brand-panel border border-brand-border text-xs font-bold text-brand-muted">${esc(a)}</span>`).join('')}</div>`
+        : '';
+      const inside = item.ingredients.length
+        ? `<h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">What's inside</h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-8">${ingredients}</ul>`
+        : '';
+      const addOnGroups = Bunzai.ADDONS.filter((group) => group.id === item.addOns);
+      const addOns = addOnGroups.length
+        ? `<h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">Available add-ons</h2>
+            <div class="w-full mb-3">${Bunzai.addOnsHTML(addOnGroups, 'bg-brand-panel')}</div>
+            <p class="text-xs text-brand-muted mb-10">Mention any add-ons in your order notes.</p>`
+        : '';
 
       root.innerHTML = `
         <nav aria-label="Breadcrumb" class="text-xs font-bold uppercase tracking-wider text-brand-muted mb-8">
@@ -96,10 +108,9 @@
             <h1 class="text-5xl sm:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white mb-4">${esc(item.name)}</h1>
             <p class="text-3xl font-black text-brand-yellow mb-6">${Bunzai.formatPrice(item.price)}</p>
             <p class="text-brand-muted text-base md:text-lg leading-relaxed mb-8">${esc(item.description)}</p>
-            <h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">What's inside</h2>
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-8">${ingredients}</ul>
-            <h2 class="text-xs uppercase font-black tracking-wider text-brand-yellow mb-3">Allergens</h2>
-            <div class="flex flex-wrap gap-2 mb-10">${allergens}</div>
+            ${inside}
+            ${addOns}
+            ${allergens}
             <div class="flex flex-wrap items-center gap-4 w-full pt-8 border-t border-brand-border">
               <div class="flex items-center gap-1 bg-brand-panel border border-brand-border rounded-full p-1.5">
                 <button class="w-10 h-10 rounded-full hover:bg-brand-panelLight text-white font-black text-lg" type="button" aria-label="Decrease quantity" data-step="-1">−</button>

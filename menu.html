@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Menu — Bunzai Burgers</title>
-<meta name="description" content="The full Bunzai Burgers menu: signature smash burgers, loaded sides and draft cola, with prices in AED."/>
+<meta name="description" content="The full Bunzai Burgers menu: smash burgers, chicken sandos, tenders, loaded fries, drinks and add-ons, with prices in AED."/>
 <meta name="theme-color" content="#050B17"/>
 <link rel="icon" type="image/svg+xml" href="./assets/bunzai-favicon.svg?v=1"/>
 <!-- Google Fonts for Display & Body Typography -->
@@ -34,7 +34,7 @@
           The Full <span class="text-brand-yellow">Menu.</span>
         </h1>
 <p class="text-lg text-brand-muted max-w-2xl leading-relaxed">
-          Signature smashes, loaded sides and ice-cold draft cola. Tap any item for ingredients and allergens, or hit + to add it to your order.
+          Smashed beef, crispy chicken, loaded fries and cold drinks. Tap any item for what's inside, or hit + to add it to your order.
         </p>
 </div>
 </section>
@@ -43,19 +43,20 @@
 <section class="pb-28" data-purpose="menu-section" id="menu">
 <div class="max-w-[1180px] mx-auto px-6">
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
-<div class="flex flex-wrap items-center gap-2 bg-brand-panel p-1.5 rounded-full border border-brand-border self-start" role="tablist">
-<button aria-selected="true" class="menu-tab-btn active bg-brand-yellow text-black px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="all" role="tab">All</button>
-<button aria-selected="false" class="menu-tab-btn text-brand-muted hover:text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="burgers" role="tab">Burgers</button>
-<button aria-selected="false" class="menu-tab-btn text-brand-muted hover:text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="sides" role="tab">Sides</button>
-<button aria-selected="false" class="menu-tab-btn text-brand-muted hover:text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all" data-filter="drinks" role="tab">Drinks</button>
-</div>
+<div class="flex flex-wrap items-center gap-2 bg-brand-panel p-1.5 rounded-full border border-brand-border self-start" id="menuTabs" role="tablist"></div>
 <p class="text-xs uppercase font-bold tracking-wider text-brand-muted">All prices in AED · Inclusive of VAT</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="menuCardsGrid"></div>
+<div class="mt-20" id="add-ons">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-xs font-bold uppercase tracking-wider mb-3"><span>● Make It Yours</span></div>
+<h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">Add-Ons</h2>
+<p class="text-brand-muted text-base mt-2 mb-8">Ask for any add-on when you order — just mention it in your order notes.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start" id="addOnsGrid"></div>
+</div>
 <div class="mt-14 p-6 sm:p-8 rounded-3xl bg-brand-panel border border-brand-border flex flex-col md:flex-row md:items-center justify-between gap-6">
 <div>
 <p class="text-xs uppercase font-black tracking-wider text-brand-yellow">Allergy note</p>
-<p class="text-sm text-brand-muted mt-1 max-w-2xl">Our kitchen handles gluten, dairy, egg and mustard. Allergens are listed on each item's page — ask the crew if you need anything adjusted.</p>
+<p class="text-sm text-brand-muted mt-1 max-w-2xl">Our kitchen handles gluten, dairy, egg and mustard. Ask the crew about allergens, or if you need anything adjusted.</p>
 </div>
 <a class="inline-flex items-center justify-center gap-3 bg-brand-yellow hover:bg-brand-yellowHover text-black text-sm font-black uppercase tracking-wider px-8 py-4 rounded-full shadow-xl shadow-brand-yellow/30 hover:scale-105 transition-all shrink-0" href="order.html"><span>Review Order</span><svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
 </div>
@@ -71,7 +72,9 @@
 <script src="./assets/site/layout.js"></script>
 <script data-purpose="menu-rendering">
     // Full menu grid + category filter, rendered from the shared menu data
+    document.getElementById('menuTabs').innerHTML = Bunzai.menuTabsHTML();
     Bunzai.renderMenuGrid(document.getElementById('menuCardsGrid'), Bunzai.MENU, 'bg-brand-panel');
+    Bunzai.renderAddOns(document.getElementById('addOnsGrid'), null, 'bg-brand-panel');
     Bunzai.initMenuFilter(document.getElementById('menu'));
   </script>
 <!-- END: Client Interactivity Scripts -->

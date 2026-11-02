@@ -1,92 +1,214 @@
 // Single source of truth for the Bunzai menu. Home, menu.html, product.html and order.html render from it.
 (function () {
-  const IMG = {
-    classic: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfjwRd5cvykPBguRjQtFbMB8XvKdoe21CawzKmjqGAZBt6izFwMHC_JVWxAFL8WtOmqkweQo5ByxxdCyUDumTz1amv4gjC_qqqr3TRJsmVWtoAcOffu-c3Upe8VmmYwbK2L4zMSq2SYttJtBMCETecB76OrgHC-XTxjWPsAteLB4pPi-QDiH0-d_78PFaRcZOEuno6tSrP4Fa9OmhxHHAG-ou0r-TpS3fWI78ubF2yIfFkLCN9rp9TrQ',
-    firecracker: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBYI7wzXUVdjGM88ko3uxiKFrjM0YzmY58eK2NK3Ns4BMQNalr3zP02Jhjn8XSdnR1sHKCudC7wEDvTbk4qDOHONrGBUO6AGO_243EdXzxV7ISzVDnP2Tsdyn2l-aFgZzPsgEegWgp-jxQtFrZbLP4f1bMnHbweu3K989vwQWEtU2bEcZiSxNSJkD6cYIapMlA-GvZ6N28ackvo24mFhPKrXAqqu234rbsDT6EjG-bRdYuTLJpwryfIvw',
-    truffle: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA2NmroVKD4LD4QKkALVY86U-QIL2kDharmRm4voJJ0foeqpNzuZd4deg_VYvhJG5UiOYMU3flrvEuuV10jvTw4wCgEfovlrmw9xF5jKYaObvSyIbtkOuYk52Qms7RtbHFTGY7yUSTU-W7ae6rUKOTZcZLg0HBFR8-xD-Iv5YOyT1MhVCwa_STqDzW_qIE6E6qY9WD58RBAZUHhFBJ32azPbCNijupxlaclgVpVqbcTt_uLYnk-NzupAA',
-    fries: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnDYiabi_secgsBQr-4o5mcoGf8hU4rpXFuEHfi7DIULG3glk6csOjduItf-8aXBnyPQRnJ7l-_zB1YLlTqiwKNa_4AYz475VhFQNhZJMGZ1ASoayhlFNNSN8rZ_h8z9TRwZdeZ165HLdncUwaC-cTVqD3NeKNyyjn0i7JA0Lf7fa7884MCDHk0OsidyYK4zngmW3W9TkRtS4HdnoWMAh6ZehbjHKj-x6SoiZcy4k960B0MIa36VPIvA'
-  };
+  const img = (slug) => `./assets/menu/${slug}.webp`;
+  const SPICY = { label: 'Spicy', className: 'bg-red-600 text-white' };
 
-  window.BUNZAI_HERO_IMAGE = IMG.classic;
+  window.BUNZAI_HERO_IMAGE = img('single-smash');
+
+  // Display order for category tabs and labels.
+  window.BUNZAI_CATEGORIES = [
+    { id: 'beef-burgers', label: 'Beef Burgers' },
+    { id: 'chicken-burgers', label: 'Chicken Burgers' },
+    { id: 'tenders', label: 'Tenders & More' },
+    { id: 'fries', label: 'Fries' },
+    { id: 'beverages', label: 'Beverages' }
+  ];
+
+  // Display-only extras; customers mention them in their order notes.
+  window.BUNZAI_ADDONS = [
+    {
+      id: 'beef',
+      title: 'Beef Burger Add-Ons',
+      items: [['Extra Beef Patty', 8], ['Extra Beef Bacon', 4], ['Extra Cheese', 2], ['Extra Jalapeños', 1], ['Extra Caramelised Onion', 2]]
+    },
+    {
+      id: 'sauce',
+      title: 'Sauce Add-Ons',
+      items: [['Garlic Parmesan', 2], ['Honey Sriracha', 2]]
+    }
+  ];
+
+  // summary doubles as description: the copy is the client's own menu text.
+  const item = (fields) => ({ badge: null, featured: false, ingredients: [], related: [], ...fields, description: fields.summary });
 
   window.BUNZAI_MENU = [
-    {
-      slug: 'bunzai-classic',
-      name: 'Bunzai Classic',
-      category: 'burgers',
-      price: 32,
-      badge: { label: 'Bestseller', className: 'bg-brand-yellow text-black' },
-      image: IMG.classic,
-      summary: 'Double smashed Angus beef, triple aged cheddar, dill pickles & house glaze on buttery brioche.',
-      description: 'The burger that started it all. Two 100% prime Angus patties smashed hard on 600°F cast iron for lacy, caramelized edges, layered with triple aged cheddar that melts into every crevice. Crunchy dill pickles cut through the richness, and our signature house glaze ties it together on a toasted, butter-sealed brioche.',
-      ingredients: ['2 × smashed Angus patties', 'Triple aged cheddar', 'Dill pickles', 'Signature house glaze', 'Toasted brioche bun'],
-      allergens: ['Gluten', 'Dairy', 'Egg', 'Mustard'],
-      related: ['firecracker-smash', 'loaded-fries', 'draft-cola']
-    },
-    {
-      slug: 'firecracker-smash',
-      name: 'Firecracker Smash',
-      category: 'burgers',
-      price: 36,
-      badge: { label: 'Spicy', className: 'bg-red-600 text-white' },
-      image: IMG.firecracker,
-      summary: 'Smoky Angus beef, pickled jalapeño crunch, molten cheddar & hot fire drizzle sauce on brioche.',
-      description: 'For the heat seekers. Smoky smashed Angus beef stacked with pickled jalapeños for bright, tangy crunch, molten cheddar to calm things down, and our fire drizzle — a slow-building chilli sauce with a smoky finish. Served on toasted brioche that holds up to every drop.',
-      ingredients: ['2 × smashed Angus patties', 'Pickled jalapeños', 'Molten cheddar', 'Hot fire drizzle', 'Toasted brioche bun'],
-      allergens: ['Gluten', 'Dairy', 'Egg'],
-      related: ['bunzai-classic', 'onion-rings', 'draft-cola']
-    },
-    {
-      slug: 'bunzai-truffle',
-      name: 'Bunzai Truffle',
-      category: 'burgers',
-      price: 42,
-      badge: { label: 'Signature', className: 'bg-amber-400 text-black' },
-      image: IMG.truffle,
-      summary: 'Double Angus, wild sautéed mushrooms, caramelized onions, rich black truffle aioli & shaved parmesan.',
-      description: 'Our most indulgent build. Double Angus smashed to a deep crust, topped with wild mushrooms sautéed in garlic butter, slow-caramelized onions, a generous spread of black truffle aioli and shaved aged parmesan. Earthy, rich and unapologetically bold.',
-      ingredients: ['2 × smashed Angus patties', 'Wild sautéed mushrooms', 'Caramelized onions', 'Black truffle aioli', 'Shaved parmesan', 'Toasted brioche bun'],
-      allergens: ['Gluten', 'Dairy', 'Egg'],
-      related: ['bunzai-classic', 'loaded-fries', 'onion-rings']
-    },
-    {
-      slug: 'loaded-fries',
-      name: 'Loaded Fries',
-      category: 'sides',
+    // ---------- Beef Burgers ----------
+    item({
+      slug: 'single-smash',
+      name: 'Single Smash',
+      category: 'beef-burgers',
       price: 18,
-      badge: { label: 'Loaded', className: 'bg-brand-yellow text-black' },
-      image: IMG.fries,
-      summary: 'Crisp seasoned fries smothered in warm molten cheddar sauce, signature glaze & smoky bacon crumbles.',
-      description: 'Double-fried for a shatter-crisp shell and fluffy middle, tossed in our house seasoning, then buried under warm cheddar sauce, a zig-zag of signature glaze and smoky beef bacon crumbles. Made for sharing — or not.',
-      ingredients: ['Double-fried seasoned fries', 'Molten cheddar sauce', 'Signature glaze', 'Smoky beef bacon crumbles', 'Spring onion'],
-      allergens: ['Dairy', 'Mustard'],
-      related: ['bunzai-classic', 'onion-rings', 'draft-cola']
-    },
-    {
-      slug: 'onion-rings',
-      name: 'Bunzai Onion Rings',
-      category: 'sides',
-      price: 16,
-      badge: null,
-      illustration: 'rings',
-      summary: 'Extra-thick yellow sweet onions, beer-battered, flash-fried golden and served with smoky dipping sauce.',
-      description: 'Thick-cut sweet yellow onions dipped in a light, crackly batter and flash-fried until deep golden. Sweet inside, crunchy outside, and served with our smoky dipping sauce on the side.',
-      ingredients: ['Thick-cut sweet onions', 'Crisp golden batter', 'Smoky dipping sauce'],
-      allergens: ['Gluten', 'Egg'],
-      related: ['firecracker-smash', 'loaded-fries', 'draft-cola']
-    },
-    {
-      slug: 'draft-cola',
-      name: 'Bunzai Draft Cola',
-      category: 'drinks',
-      price: 10,
-      badge: null,
+      image: img('single-smash'),
+      featured: true,
+      summary: 'Smashed beef patty, cheese, jalapeños & our house sauce.',
+      ingredients: ['Smashed beef patty', 'Cheese', 'Jalapeños', 'House sauce', 'Brioche bun'],
+      addOns: 'beef',
+      related: ['double-smash', 'fries', 'iced-milo']
+    }),
+    item({
+      slug: 'double-smash',
+      name: 'Double Smash',
+      category: 'beef-burgers',
+      price: 25,
+      badge: { label: 'Bestseller', className: 'bg-brand-yellow text-black' },
+      image: img('double-smash'),
+      featured: true,
+      summary: 'Two smashed beef patties, beef bacon, caramelised onion, cheese, jalapeños & our house sauce.',
+      ingredients: ['2 × smashed beef patties', 'Beef bacon', 'Caramelised onion', 'Cheese', 'Jalapeños', 'House sauce', 'Brioche bun'],
+      addOns: 'beef',
+      related: ['remix', 'truffle-fries', 'pink-tropic']
+    }),
+    item({
+      slug: 'remix',
+      name: 'REMIX',
+      category: 'beef-burgers',
+      price: 32,
+      badge: { label: 'Signature', className: 'bg-amber-400 text-black' },
+      image: img('remix'),
+      featured: true,
+      summary: 'Two beef patties, a jalapeño popper, cheese, pickled onion & cabbage with our Signature Tahini Sauce.',
+      ingredients: ['2 × beef patties', 'Jalapeño popper', 'Cheese', 'Pickled onion', 'Pickled cabbage', 'Signature Tahini Sauce', 'Brioche bun'],
+      addOns: 'beef',
+      related: ['double-smash', 'beef-fries', 'iced-milo']
+    }),
+
+    // ---------- Chicken Burgers ----------
+    item({
+      slug: 'chicken-sando',
+      name: 'Chicken Sando',
+      category: 'chicken-burgers',
+      price: 15,
+      image: img('chicken-sando'),
+      summary: 'Crispy fried chicken, lettuce & garlic Parmesan sauce.',
+      ingredients: ['Crispy fried chicken', 'Lettuce', 'Garlic Parmesan sauce', 'Brioche bun'],
+      addOns: 'sauce',
+      related: ['hot-chicken-sando', 'fries', 'pink-tropic']
+    }),
+    item({
+      slug: 'hot-chicken-sando',
+      name: 'Hot Chicken Sando',
+      category: 'chicken-burgers',
+      price: 18,
+      badge: SPICY,
+      image: img('hot-chicken-sando'),
+      featured: true,
+      summary: 'Nashville-spiced chicken, coleslaw & garlic Parmesan sauce.',
+      ingredients: ['Nashville-spiced chicken', 'Coleslaw', 'Garlic Parmesan sauce', 'Brioche bun'],
+      addOns: 'sauce',
+      related: ['chicken-sando', 'chicken-fries', 'iced-milo']
+    }),
+
+    // ---------- Tenders & More ----------
+    item({
+      slug: 'chicken-tenders',
+      name: 'Chicken Tenders',
+      category: 'tenders',
+      price: 15,
+      image: img('chicken-tenders'),
+      summary: 'Crispy chicken tenders served with our Maple Blaze dip.',
+      ingredients: ['Crispy chicken tenders', 'Maple Blaze dip'],
+      addOns: 'sauce',
+      related: ['nashville-tenders', 'fries', 'pink-tropic']
+    }),
+    item({
+      slug: 'nashville-tenders',
+      name: 'Nashville Tenders',
+      category: 'tenders',
+      price: 18,
+      badge: SPICY,
+      image: img('nashville-tenders'),
+      featured: true,
+      summary: 'Chicken tenders coated in spiced Nashville butter, served with garlic Parmesan dip.',
+      ingredients: ['Chicken tenders', 'Spiced Nashville butter', 'Garlic Parmesan dip'],
+      addOns: 'sauce',
+      related: ['chicken-slaw', 'chicken-tenders', 'iced-milo']
+    }),
+    item({
+      slug: 'chicken-slaw',
+      name: 'Chicken Slaw',
+      category: 'tenders',
+      price: 20,
+      image: img('chicken-slaw'),
+      summary: 'Chopped Nashville chicken tenders with slaw & pickled onion.',
+      ingredients: ['Chopped Nashville chicken tenders', 'Slaw', 'Pickled onion'],
+      addOns: 'sauce',
+      related: ['nashville-tenders', 'hot-chicken-sando', 'pink-tropic']
+    }),
+
+    // ---------- Fries ----------
+    item({
+      slug: 'fries',
+      name: 'Fries',
+      category: 'fries',
+      price: 9,
+      image: img('fries'),
+      summary: 'Lightly salted skin-on fries.',
+      ingredients: ['Skin-on fries', 'Sea salt'],
+      addOns: 'sauce',
+      related: ['single-smash', 'chicken-sando', 'cold-drinks']
+    }),
+    item({
+      slug: 'truffle-fries',
+      name: 'Truffle Fries',
+      category: 'fries',
+      price: 17,
+      image: img('truffle-fries'),
+      featured: true,
+      summary: 'Skin-on fries topped with truffle sauce & grated Parmesan.',
+      ingredients: ['Skin-on fries', 'Truffle sauce', 'Grated Parmesan'],
+      addOns: 'sauce',
+      related: ['double-smash', 'remix', 'iced-milo']
+    }),
+    item({
+      slug: 'beef-fries',
+      name: 'Beef Fries',
+      category: 'fries',
+      price: 23,
+      image: img('beef-fries'),
+      summary: 'Curly fries with beef, beef bacon & garlic Parmesan sauce.',
+      ingredients: ['Curly fries', 'Beef', 'Beef bacon', 'Garlic Parmesan sauce'],
+      addOns: 'sauce',
+      related: ['remix', 'single-smash', 'cold-drinks']
+    }),
+    item({
+      slug: 'chicken-fries',
+      name: 'Chicken Fries',
+      category: 'fries',
+      price: 20,
+      image: img('chicken-fries'),
+      summary: 'Curly fries with crispy chicken, jalapeños & our house sauces.',
+      ingredients: ['Curly fries', 'Crispy chicken', 'Jalapeños', 'House sauces'],
+      addOns: 'sauce',
+      related: ['hot-chicken-sando', 'chicken-tenders', 'pink-tropic']
+    }),
+
+    // ---------- Beverages ----------
+    item({
+      slug: 'iced-milo',
+      name: 'Iced Milo',
+      category: 'beverages',
+      price: 15,
+      image: img('iced-milo'),
+      summary: 'Ice-cold Iced Milo.',
+      related: ['double-smash', 'nashville-tenders', 'truffle-fries']
+    }),
+    item({
+      slug: 'pink-tropic',
+      name: 'PINK TROPIC',
+      category: 'beverages',
+      price: 13,
+      image: img('pink-tropic'),
+      summary: 'Our ice-cold pink tropical fruit cooler.',
+      related: ['hot-chicken-sando', 'chicken-tenders', 'fries']
+    }),
+    item({
+      slug: 'cold-drinks',
+      name: 'Cold Drinks',
+      category: 'beverages',
+      price: 3,
       illustration: 'cola',
-      summary: 'Cold, fizzy house draft craft cola infused with natural vanilla bean. Custom-built to balance rich burgers.',
-      description: 'Our house craft cola, poured ice-cold from the tap. Natural vanilla bean and a hint of citrus peel give it a smooth, rounded finish that cuts through rich, cheesy burgers.',
-      ingredients: ['Sparkling water', 'Cane sugar', 'Natural vanilla bean', 'Citrus peel', 'Cola botanicals'],
-      allergens: [],
-      related: ['bunzai-classic', 'bunzai-truffle', 'loaded-fries']
-    }
+      summary: 'Chilled soft drinks.',
+      related: ['single-smash', 'fries', 'chicken-sando']
+    })
   ];
 })();
