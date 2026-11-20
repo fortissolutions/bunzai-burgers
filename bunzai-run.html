@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050b18">
+<meta name="description" content="Spin the Bunzai Burgers prize wheel and unlock a reward with your next order. $30 minimum purchase.">
+<title>Bunzai Burgers | Spin &amp; Win</title>
+<link rel="icon" type="image/svg+xml" href="/assets/bunzai-favicon.svg?v=1">
+<style>
+:root{--bg:#050b18;--panel:#0b1427;--panel-2:#101d32;--yellow:#ffd21a;--muted:#91a0b8;--white:#f7f8fc;--line:#1d2a40}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;overflow-x:hidden;background:radial-gradient(ellipse at 80% 15%,#13213a 0,transparent 38%),var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Header */
+header{height:76px;padding:0 clamp(20px,5vw,76px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12;background:#050b18ef;position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.4px;line-height:1.15}
+.brandmark{width:39px;height:39px;border-radius:11px;background:var(--yellow);color:#07101e;display:grid;place-items:center;font-size:25px;font-weight:900;box-shadow:0 5px 22px #ffd21a38}
+.brand small{display:block;color:var(--yellow);font-size:10px;letter-spacing:1.5px}
+.logout{border:1px solid #ffffff20;background:#101b30;color:var(--white);border-radius:50%;width:42px;height:42px;display:grid;place-items:center;cursor:pointer;transition:border-color .2s,color .2s}
+.logout:hover{border-color:var(--yellow);color:var(--yellow)}
+.logout svg{width:19px;height:19px}
+
+/* Hero */
+.hero{min-height:510px;display:grid;grid-template-columns:1fr 1.05fr;align-items:center;gap:30px;padding:62px clamp(20px,7vw,110px);overflow:hidden;position:relative;border-bottom:1px solid var(--line)}
+.hero:before{content:"";position:absolute;width:420px;height:420px;background:#f9c9150c;filter:blur(65px);left:20%;bottom:-250px;border-radius:50%;pointer-events:none}
+.hero-copy{position:relative;z-index:1;max-width:570px}
+.eyebrow{display:inline-flex;border:1px solid #26334a;background:#0d1729;border-radius:99px;padding:8px 13px;color:var(--yellow);font-size:11px;font-weight:800;letter-spacing:1px}
+.hero h1{font-size:clamp(54px,7.5vw,94px);line-height:.88;letter-spacing:-.055em;margin:25px 0 18px;font-weight:900;text-transform:uppercase}
+.hero h1 span{color:var(--yellow);display:block}
+.hero h2{font-size:20px;margin:0 0 9px}
+.hero p{color:var(--muted);font-size:16px;line-height:1.65;max-width:440px;margin:0 0 24px}
+.cta{border:0;border-radius:99px;background:var(--yellow);color:#08101d;padding:15px 25px;font:inherit;font-weight:900;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;box-shadow:0 9px 26px #ffd21a25;transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-block}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px #ffd21a45}
+.hero-visual{position:relative;min-width:0}
+.hero-visual img{display:block;width:100%;height:clamp(420px,40vw,560px);object-fit:cover;object-position:center 53%;border-radius:26px;filter:drop-shadow(0 25px 45px #0009);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 100%)}
+.slide-dots{display:flex;gap:9px;margin-top:22px}
+.slide-dots i{width:8px;height:8px;border-radius:50%;background:#34435e}
+.slide-dots i:first-child{background:var(--yellow)}
+
+/* Ticker */
+.ticker{background:var(--yellow);color:#09101b;padding:12px 0;overflow:hidden;white-space:nowrap;font-weight:900;letter-spacing:1px;font-size:13px}
+.ticker-track{display:inline-flex;animation:ticker 32s linear infinite}
+.ticker-track span{padding:0 18px}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Offer */
+.offer{padding:74px 20px 82px;text-align:center;position:relative}
+.offer .eyebrow{margin-bottom:15px}
+.offer h2{font-size:clamp(32px,4vw,48px);letter-spacing:-1.5px;margin:0 0 12px;line-height:1.1}
+.offer h2 em{font-style:normal;color:var(--yellow)}
+.intro{color:var(--muted);max-width:570px;margin:0 auto;line-height:1.6}
+.offer-layout{max-width:480px;margin:34px auto 0;text-align:left}
+.wheel-stage{display:flex;flex-direction:column;align-items:center}
+.wheel-stage[hidden]{display:none}
+.wheel-stage .spin-btn{width:min(100%,360px);margin-top:22px}
+.wheel-stage .hint{text-align:center}
+.stage-out{animation:stageOut .35s ease forwards}
+@keyframes stageOut{to{opacity:0;transform:scale(.94)}}
+.reward-stage{display:none;background:linear-gradient(145deg,#0d192d,#091222);border:1px solid #263750;border-radius:18px;padding:28px;box-shadow:0 18px 50px #0003;animation:stageIn .45s ease both}
+.reward-stage.show{display:block}
+@keyframes stageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.wheel-wrap{display:grid;place-items:center;position:relative;padding:12px}
+.pointer{position:absolute;z-index:3;top:0;left:50%;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:25px solid var(--yellow);filter:drop-shadow(0 3px 5px #0009)}
+canvas{display:block;width:min(86vw,430px);height:auto;filter:drop-shadow(0 16px 28px #0008);cursor:pointer}
+.spin-btn{font-size:15px}
+.spin-btn:disabled{opacity:.42;cursor:not-allowed;box-shadow:none;transform:none}
+.hint{font-size:12px;color:#8291a8;margin-top:12px;min-height:18px}
+.result{display:none;padding:16px;border:1px solid #806a1c;background:#211e12;border-radius:14px;color:var(--yellow);font-weight:900;text-align:center}
+.result.show{display:block}
+.result small{display:block;color:#d3d8e2;font-weight:500;margin-top:5px}
+.result .prize-title{display:block;font-size:22px;margin:4px 0 2px;letter-spacing:.3px}
+.result .kicker{display:block;font-size:11px;letter-spacing:1.4px;color:#d3d8e2;font-weight:800}
+
+/* Claim form */
+.claim{margin-top:20px}
+.claim h4{margin:0 0 4px;font-size:17px}
+.claim > p{font-size:13px;margin:0 0 14px;color:var(--muted)}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;font-weight:800;letter-spacing:.8px;color:#c3ccda;margin-bottom:6px;text-transform:uppercase}
+.field input{width:100%;font:inherit;font-size:16px;color:var(--white);background:var(--panel-2);border:1px solid #2a3b57;border-radius:12px;padding:12px 14px;transition:border-color .2s}
+.field input::placeholder{color:#5f6f88}
+.field input:focus{border-color:var(--yellow);outline:none;box-shadow:0 0 0 3px #ffd21a33}
+.field input[aria-invalid="true"]{border-color:#ff6b6b}
+.field .error{display:block;min-height:16px;margin-top:5px;font-size:12px;color:#ff8a8a}
+.consent{display:flex;align-items:flex-start;gap:10px;color:#c3ccda;font-size:13px;line-height:1.5;margin:4px 0 16px;cursor:pointer}
+.consent input{accent-color:var(--yellow);margin:2px 0 0;width:18px;height:18px;flex:none;cursor:pointer}
+.claim .cta{width:100%}
+.claim .cta:disabled{opacity:.42;cursor:not-allowed;box-shadow:none;transform:none}
+.claim .cta.busy{cursor:progress}
+.form-error{font-size:12px;color:#ff8a8a;margin-top:10px;min-height:16px}
+
+/* Reward / redeemed cards */
+.card-head{text-align:center}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:6px 12px;font-size:11px;font-weight:900;letter-spacing:1.2px}
+.badge.pending{background:#211e12;border:1px solid #806a1c;color:var(--yellow)}
+.badge.done{background:#0f2219;border:1px solid #2f6b45;color:#7be0a0}
+.card-head h3{font-size:26px;margin:12px 0 4px;line-height:1.15}
+.card-head h3 em{font-style:normal;color:var(--yellow)}
+.card-head p{color:var(--muted);font-size:14px;margin:0;line-height:1.55}
+.notice{margin:16px 0 0;padding:12px 14px;border-radius:12px;background:#2a1d10;border:1px solid #7a5420;color:#ffcf8a;font-size:13px;line-height:1.5}
+.summary{margin:18px 0 0;padding:4px 16px;border:1px solid var(--line);border-radius:14px;background:#0a1324}
+.summary div{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.summary div:last-child{border-bottom:0}
+.summary dt{color:var(--muted)}
+.summary dd{margin:0;font-weight:800;text-align:right;overflow-wrap:anywhere}
+.summary .offer-val{color:var(--yellow)}
+.summary .code-val{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:1.5px;color:var(--yellow)}
+.block{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.block h4{margin:0 0 8px;font-size:15px}
+.block p{margin:0 0 4px;color:#c3ccda;font-size:13px;line-height:1.55}
+.block .muted{color:var(--muted)}
+.map{position:relative;margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid #2a3b57;background:var(--panel-2);aspect-ratio:16/10}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(.15) contrast(1.05)}
+.insta{display:flex;align-items:center;gap:14px;margin-top:18px;padding:16px;border-radius:14px;background:linear-gradient(120deg,#2a1530,#1a1430 45%,#0d1a30);border:1px solid #3a2a4f;text-decoration:none;color:var(--white)}
+.insta:hover{border-color:#c46bd6}
+.insta-icon{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+.insta-icon svg{width:24px;height:24px}
+.insta strong{display:block;font-size:14px}
+.insta span{display:block;font-size:12px;color:#c9b8dd;margin-top:2px}
+.insta .go{margin-left:auto;font-weight:900;color:#e9b6f5}
+.loading{color:var(--muted);text-align:center;padding:40px 0;font-size:14px}
+
+.prize-note{display:flex;justify-content:center;gap:12px 22px;flex-wrap:wrap;margin:34px auto 0;padding:0;list-style:none;color:#aab6c8;font-size:12px}
+.prize-note[hidden]{display:none}
+.prize-note b{color:var(--yellow);font-weight:800}
+
+footer{border-top:1px solid var(--line);text-align:center;color:#77869d;padding:23px 15px;font-size:12px}
+
+/* Mobile */
+@media (max-width:760px){
+ header{height:66px;padding:0 18px}
+ .brandmark{width:36px;height:36px}
+ .hero{min-height:0;grid-template-columns:1fr;padding:48px 22px 30px;gap:15px}
+ .hero h1{font-size:clamp(48px,17vw,65px);margin:22px 0 15px}
+ .hero h2{font-size:17px}
+ .hero p{font-size:14px;line-height:1.55}
+ .hero-visual img{height:clamp(300px,82vw,400px);border-radius:18px;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}
+ .slide-dots{margin-top:4px;justify-content:center}
+ .ticker{font-size:11px;padding:10px 0}
+ .offer{padding:54px 18px 58px}
+ .offer h2{font-size:32px}
+ .intro{font-size:14px}
+ .offer-layout{margin-top:26px}
+ .wheel-wrap{padding:8px}
+ .reward-stage{padding:22px}
+ canvas{width:min(86vw,350px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .ticker-track,.stage-out,.reward-stage{animation:none}
+ .cta,.logout{transition:none}
+ .cta:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="brandmark" aria-hidden="true">B</div><div>BUNZAI<small>BURGERS</small></div></div>
+ <button class="logout" id="logout" type="button" aria-label="Log out" title="Log out">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+ </button>
+</header>
+
+<main>
+ <section class="hero" id="home" aria-labelledby="hero-title">
+  <div class="hero-copy">
+   <div class="eyebrow">✦ &nbsp; PREMIUM SMASH BURGERS</div>
+   <h1 id="hero-title">We<br>smash<span>better.</span></h1>
+   <h2>Your cravings. Your rewards.</h2>
+   <p>Big, bold burgers deserve bigger rewards. Spin the wheel to discover a reward for your next Bunzai meal.</p>
+   <a class="cta" href="#offers" id="hero-cta">Spin to win &nbsp;→</a>
+   <div class="slide-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+  </div>
+  <div class="hero-visual">
+   <img src="/assets/campaign/burger-hero.jpg" width="480" height="350" alt="Bunzai double smash burger with melted cheese on a toasted brioche bun">
+  </div>
+ </section>
+
+ <div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+   <span>SMASHED FRESH</span><span>✦</span><span>BIGGER. BOLDER. BETTER.</span><span>✦</span><span>YOUR CRAVINGS, YOUR REWARDS</span><span>✦</span>
+   <span>SMASHED FRESH</span><span>✦</span><span>BIGGER. BOLDER. BETTER.</span><span>✦</span><span>YOUR CRAVINGS, YOUR REWARDS</span><span>✦</span>
+   <span>SMASHED FRESH</span><span>✦</span><span>BIGGER. BOLDER. BETTER.</span><span>✦</span><span>YOUR CRAVINGS, YOUR REWARDS</span><span>✦</span>
+   <span>SMASHED FRESH</span><span>✦</span><span>BIGGER. BOLDER. BETTER.</span><span>✦</span><span>YOUR CRAVINGS, YOUR REWARDS</span><span>✦</span>
+  </div>
+ </div>
+
+ <section class="offer" id="offers" aria-labelledby="offer-title">
+  <div class="eyebrow">✦ &nbsp; SPIN &amp; WIN</div>
+  <h2 id="offer-title">Your next meal could be <em>more delicious.</em></h2>
+  <p class="intro" id="intro">One spin. Exciting rewards. Discover a little extra with your next Bunzai order.</p>
+
+  <div class="offer-layout">
+   <div class="loading" id="loading">Loading the wheel…</div>
+
+   <div class="wheel-stage" id="wheel-stage" hidden>
+    <div class="wheel-wrap">
+     <div class="pointer" aria-hidden="true"></div>
+     <canvas id="wheel" width="600" height="600" role="img" aria-label="Prize wheel"></canvas>
+    </div>
+    <button class="cta spin-btn" id="spin" type="button">Spin the wheel &nbsp;→</button>
+    <div class="hint" id="hint" aria-live="polite"></div>
+   </div>
+
+   <!-- Step 2: granted offer + claim form -->
+   <div class="reward-stage" id="claim-stage" tabindex="-1">
+    <div class="result show" role="status" aria-live="polite">
+     <span class="kicker">🎉 YOUR GRANTED OFFER</span>
+     <span class="prize-title" id="granted-offer"></span>
+     <small>Claim it below, then redeem it at our store.</small>
+    </div>
+    <form class="claim" id="claim" novalidate aria-labelledby="claim-title">
+     <h4 id="claim-title">Claim your reward</h4>
+     <p>Enter your details so we can save this reward for you.</p>
+     <div class="field">
+      <label for="claim-name">Full name</label>
+      <input id="claim-name" name="name" type="text" autocomplete="name" maxlength="60" placeholder="e.g. Sara Ahmed" aria-describedby="claim-name-error" required>
+      <span class="error" id="claim-name-error"></span>
+     </div>
+     <div class="field">
+      <label for="claim-phone">UAE mobile number</label>
+      <input id="claim-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="e.g. 050 123 4567" aria-describedby="claim-phone-error" required>
+      <span class="error" id="claim-phone-error"></span>
+     </div>
+     <label class="consent"><input id="claim-consent" type="checkbox" required><span>I agree to Bunzai Burgers storing my name and phone number to issue and redeem this reward.</span></label>
+     <button class="cta" type="submit" id="claim-submit" disabled>Claim my reward &nbsp;→</button>
+     <div class="form-error" id="claim-error" role="alert"></div>
+    </form>
+   </div>
+
+   <!-- Step 3: reward card (or redeemed card) -->
+   <div class="reward-stage" id="reward-stage" tabindex="-1" role="region" aria-labelledby="reward-title"></div>
+  </div>
+
+  <ul class="prize-note" id="prize-note" aria-label="Possible rewards"></ul>
+ </section>
+
+ <template id="tpl-reward">
+  <div class="card-head">
+   <span class="badge pending">● READY TO REDEEM</span>
+   <h3 id="reward-title">You won <em data-f="offer"></em></h3>
+   <p>Show this screen or your reward code at the counter.</p>
+  </div>
+  <p class="notice" data-f="notice" hidden></p>
+  <dl class="summary">
+   <div><dt>Name</dt><dd data-f="name"></dd></div>
+   <div><dt>Phone</dt><dd data-f="phone"></dd></div>
+   <div><dt>Offer</dt><dd class="offer-val" data-f="offer"></dd></div>
+   <div><dt>Reward code</dt><dd class="code-val" data-f="code"></dd></div>
+  </dl>
+  <div class="block">
+   <h4>📍 Visit our store to redeem your reward</h4>
+   <p><strong>Bunzai Burgers — Muwaileh</strong></p>
+   <p>Muwaileh Commercial, University City Road, Sharjah, UAE</p>
+   <p class="muted">Open daily: 11:00 AM – 1:00 AM · Dine-in, takeaway &amp; drive-thru</p>
+   <div class="map">
+    <iframe src="https://www.google.com/maps?q=Muwaileh+Commercial+University+City+Road+Sharjah&amp;z=15&amp;output=embed" title="Map showing Bunzai Burgers, Muwaileh Commercial, University City Road, Sharjah" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+   </div>
+  </div>
+  <div data-slot="insta"></div>
+ </template>
+
+ <template id="tpl-redeemed">
+  <div class="card-head">
+   <span class="badge done">✓ OFFER CLAIMED</span>
+   <h3 id="reward-title">You claimed <em data-f="offer"></em></h3>
+   <p>Thanks for visiting our store, <span data-f="first"></span>! Visit again for more exciting offers.</p>
+  </div>
+  <dl class="summary">
+   <div><dt>Offer</dt><dd class="offer-val" data-f="offer"></dd></div>
+   <div><dt>Reward code</dt><dd class="code-val" data-f="code"></dd></div>
+   <div><dt>Redeemed on</dt><dd data-f="redeemed"></dd></div>
+  </dl>
+  <div data-slot="insta"></div>
+ </template>
+
+ <template id="tpl-insta">
+  <a class="insta" href="https://instagram.com/bunzai.burgers" target="_blank" rel="noopener noreferrer">
+   <span class="insta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span>
+   <span><strong>Follow @bunzai.burgers</strong><span>Get more exciting offers first on Instagram.</span></span>
+   <span class="go" aria-hidden="true">→</span>
+  </a>
+ </template>
+</main>
+
+<footer>© 2026 Bunzai Burgers. All rights reserved.</footer>
+
+<script src="/vendor/libphonenumber-max.js"></script>
+<script>
+(function(){
+ 'use strict';
+ const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+ const STORAGE_KEY='bunzai-spin-claim';
+ const POLL_MS=20000;
+ const $=id=>document.getElementById(id);
+
+ // TODO: connect to the real authentication/logout endpoint.
+ $('logout').addEventListener('click',()=>alert('Logout will be connected to the Bunzai authentication flow.'));
+ $('hero-cta').addEventListener('click',e=>{
+  e.preventDefault();
+  $('offers').scrollIntoView({behavior:reduceMotion.matches?'auto':'smooth'});
+ });
+
+ /* ---------- helpers ---------- */
+ async function api(path,opts={}){
+  const res=await fetch(path,{headers:{'Content-Type':'application/json'},...opts});
+  let data={};try{data=await res.json();}catch(e){}
+  return {ok:res.ok,status:res.status,data};
+ }
+ const store={
+  get(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');}catch(e){return null;}},
+  set(c){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(c));}catch(e){}},
+  clear(){try{localStorage.removeItem(STORAGE_KEY);}catch(e){}}
+ };
+ const loading=$('loading'),wheelStage=$('wheel-stage'),claimStage=$('claim-stage'),rewardStage=$('reward-stage');
+ function showOnly(stage){
+  loading.hidden=stage!==loading;
+  wheelStage.hidden=stage!==wheelStage;
+  wheelStage.classList.remove('stage-out');
+  claimStage.classList.toggle('show',stage===claimStage);
+  rewardStage.classList.toggle('show',stage===rewardStage);
+ }
+ function fill(root,field,value){root.querySelectorAll(`[data-f="${field}"]`).forEach(n=>{n.textContent=value;});}
+
+ /* ---------- wheel ---------- */
+ const canvas=$('wheel'),ctx=canvas.getContext('2d'),TAU=Math.PI*2;
+ let offers=[],rotation=0,spinning=false,spinResult=null;
+
+ function labelLines(name){
+  const words=String(name).toUpperCase().split(/\s+/).filter(Boolean);
+  if(words.length<=1)return words;
+  return [words[0],words.slice(1).join(' ')];
+ }
+ function fitFont(text,weight,max,min,width){
+  let size=max;
+  do{ctx.font=`${weight} ${size}px Arial, sans-serif`;if(ctx.measureText(text).width<=width)break;size--;}while(size>min);
+  return size;
+ }
+ function drawWheel(){
+  const cx=300,cy=300,r=260,n=offers.length,step=TAU/n;
+  ctx.clearRect(0,0,600,600);
+  ctx.beginPath();ctx.arc(cx,cy,282,0,TAU);ctx.fillStyle='#0a1220';ctx.fill();
+  ctx.lineWidth=13;ctx.strokeStyle='#d6a915';ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,268,0,TAU);ctx.lineWidth=2;ctx.strokeStyle='#ffe58a';ctx.stroke();
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(rotation);
+  // Text width available at the label radius (chord of the segment), capped.
+  const labelWidth=Math.min(170,2*150*Math.sin(step/2)-16);
+  for(let i=0;i<n;i++){
+   const a=-Math.PI/2+i*step;
+   ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,r,a,a+step);ctx.closePath();
+   ctx.fillStyle=i%2?'#101d32':'#17243a';ctx.fill();
+   ctx.strokeStyle='#b88d18';ctx.lineWidth=2;ctx.stroke();
+   ctx.save();ctx.rotate(a+step/2+Math.PI/2);ctx.textAlign='center';ctx.textBaseline='middle';
+   const lines=labelLines(offers[i].name),accent=i%2===0;
+   if(lines.length===1){
+    fitFont(lines[0],'900',30,14,labelWidth);ctx.fillStyle=accent?'#ffd21a':'#f5f7fb';ctx.fillText(lines[0],0,-160);
+   }else{
+    fitFont(lines[0],'900',30,14,labelWidth);ctx.fillStyle=accent?'#ffd21a':'#f5f7fb';ctx.fillText(lines[0],0,-176);
+    fitFont(lines[1],'800',21,11,labelWidth);ctx.fillStyle=accent?'#f5f7fb':'#ffd21a';ctx.fillText(lines[1],0,-145);
+   }
+   ctx.restore();
+  }
+  ctx.restore();
+  for(let i=0;i<36;i++){
+   const a=i*TAU/36;
+   ctx.beginPath();ctx.arc(cx+275*Math.cos(a),cy+275*Math.sin(a),3.4,0,TAU);ctx.fillStyle='#ffe18a';ctx.fill();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,53,0,TAU);ctx.fillStyle='#ffd21a';ctx.fill();
+  ctx.lineWidth=5;ctx.strokeStyle='#a77d0b';ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,43,0,TAU);ctx.lineWidth=1.5;ctx.strokeStyle='#fff0a8';ctx.stroke();
+  ctx.fillStyle='#08111f';ctx.font='900 22px Arial, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('SPIN',cx,cy);
+ }
+
+ async function loadWheel(){
+  showOnly(loading);
+  loading.textContent='Loading the wheel…';
+  const {ok,data}=await api('/api/offers').catch(()=>({ok:false,data:{}}));
+  if(!ok){loading.textContent='We couldn’t load the wheel. Please refresh the page.';return;}
+  offers=data.offers||[];
+  if(offers.length<2){loading.textContent='Spin & Win is taking a short break. Please check back soon.';return;}
+  canvas.setAttribute('aria-label','Prize wheel with '+offers.length+' segments: '+offers.map(o=>o.name).join(', '));
+  $('intro').textContent=`One spin. ${offers.length} exciting rewards. Discover a little extra with your next Bunzai order.`;
+  $('prize-note').replaceChildren(...offers.map(o=>{const li=document.createElement('li');li.append('✦ ');const b=document.createElement('b');b.textContent=o.name;li.append(b);return li;}));
+  drawWheel();
+  showOnly(wheelStage);
+  spin.disabled=false;hint.textContent='';
+ }
+
+ const spin=$('spin'),hint=$('hint');
+ async function startSpin(){
+  if(spinning||spinResult)return;
+  spinning=true;spin.disabled=true;hint.textContent='The wheel is spinning…';
+  const {ok,data}=await api('/api/spin',{method:'POST'}).catch(()=>({ok:false,data:{}}));
+  const index=ok?offers.findIndex(o=>o.id===data.offerId):-1;
+  if(index===-1){
+   spinning=false;spin.disabled=false;
+   hint.textContent=data.error||'Something went wrong. Please try again.';
+   if(ok)loadWheel(); // offers changed since the page loaded
+   return;
+  }
+  const n=offers.length,step=TAU/n;
+  // Segment i's centre sits at -90° + (i+0.5)*step; bring it under the 12 o'clock pointer.
+  const current=((rotation%TAU)+TAU)%TAU;
+  const target=((-(index+.5)*step)%TAU+TAU)%TAU;
+  const delta=((target-current)%TAU+TAU)%TAU;
+  const start=rotation,end=rotation+TAU*(reduceMotion.matches?0:5)+delta;
+  const duration=reduceMotion.matches?600:4300,t0=performance.now();
+  (function frame(now){
+   const t=Math.min(1,(now-t0)/duration),ease=1-Math.pow(1-t,4);
+   rotation=start+(end-start)*ease;drawWheel();
+   if(t<1)return requestAnimationFrame(frame);
+   spinning=false;spinResult={spinId:data.spinId,offerName:data.offerName};
+   hint.textContent='You won '+data.offerName+'!';
+   setTimeout(showClaimForm,reduceMotion.matches?0:900);
+  })(t0);
+ }
+ spin.addEventListener('click',startSpin);
+ canvas.addEventListener('click',e=>{
+  const r=canvas.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width*600-300,y=(e.clientY-r.top)/r.height*600-300;
+  if(Math.hypot(x,y)<=53)startSpin();
+ });
+
+ /* ---------- claim form ---------- */
+ const form=$('claim'),nameInput=$('claim-name'),phoneInput=$('claim-phone'),consent=$('claim-consent'),
+       nameErr=$('claim-name-error'),phoneErr=$('claim-phone-error'),formErr=$('claim-error'),submitBtn=$('claim-submit');
+ let submitting=false;
+
+ function showClaimForm(){
+  $('granted-offer').textContent=spinResult.offerName;
+  const reveal=()=>{showOnly(claimStage);claimStage.scrollIntoView({behavior:reduceMotion.matches?'auto':'smooth',block:'center'});nameInput.focus({preventScroll:true});};
+  if(reduceMotion.matches)return reveal();
+  wheelStage.classList.add('stage-out');
+  wheelStage.addEventListener('animationend',reveal,{once:true});
+ }
+
+ // The button only becomes active once name, phone and consent are all given.
+ function updateSubmit(){
+  submitBtn.disabled=submitting||!nameInput.value.trim()||!phoneInput.value.trim()||!consent.checked;
+ }
+ [nameInput,phoneInput].forEach(i=>i.addEventListener('input',updateSubmit));
+ consent.addEventListener('change',updateSubmit);
+
+ function setError(input,errEl,msg){errEl.textContent=msg||'';input.setAttribute('aria-invalid',msg?'true':'false');}
+ function validateName(){
+  const v=nameInput.value.trim().replace(/\s+/g,' ');
+  let msg='';
+  if(!v)msg='Please enter your name.';
+  else if(v.length<2)msg='Name must be at least 2 characters.';
+  else if(!/^[\p{L}][\p{L}\p{M}' .-]*$/u.test(v))msg='Use letters, spaces, apostrophes or hyphens only.';
+  setError(nameInput,nameErr,msg);return !msg;
+ }
+ // UAE mobile check with libphonenumber-js: same rules and messages as the server.
+ function uaeMobileError(raw){
+  if(!raw)return 'Please enter your mobile number.';
+  if(!/^[+\d\s()-]+$/.test(raw))return 'Use digits only, e.g. 050 123 4567.';
+  const lib=window.libphonenumber;
+  if(!lib)return ''; // library failed to load: the server still validates
+  const phone=lib.parsePhoneNumberFromString(raw,'AE');
+  if(!phone||phone.country!=='AE')return 'Please enter a UAE mobile number (+971).';
+  if(!phone.isValid())return 'This UAE number doesn’t look right. Check the digits, e.g. 050 123 4567.';
+  const type=phone.getType();
+  if(type!=='MOBILE'&&type!=='FIXED_LINE_OR_MOBILE')return 'Please enter a UAE mobile number, not a landline.';
+  return '';
+ }
+ function validatePhone(){
+  const msg=uaeMobileError(phoneInput.value.trim());
+  setError(phoneInput,phoneErr,msg);return !msg;
+ }
+ // Tidy the number into "+971 50 123 4567" once it is valid.
+ phoneInput.addEventListener('change',()=>{
+  const lib=window.libphonenumber,raw=phoneInput.value.trim();
+  if(!lib||uaeMobileError(raw))return;
+  phoneInput.value=lib.parsePhoneNumberFromString(raw,'AE').formatInternational();
+ });
+ nameInput.addEventListener('blur',()=>{if(nameInput.value)validateName();});
+ phoneInput.addEventListener('blur',()=>{if(phoneInput.value)validatePhone();});
+ nameInput.addEventListener('input',()=>{if(nameInput.getAttribute('aria-invalid')==='true')validateName();});
+ phoneInput.addEventListener('input',()=>{if(phoneInput.getAttribute('aria-invalid')==='true')validatePhone();});
+
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(submitting)return;
+  formErr.textContent='';
+  const okName=validateName(),okPhone=validatePhone();
+  if(!okName){nameInput.focus();return;}
+  if(!okPhone){phoneInput.focus();return;}
+  if(!consent.checked){formErr.textContent='Please tick the consent box to claim your reward.';consent.focus();return;}
+
+  submitting=true;submitBtn.disabled=true;submitBtn.classList.add('busy');submitBtn.textContent='Claiming…';
+  const {ok,status,data}=await api('/api/claims',{method:'POST',body:JSON.stringify({
+   spinId:spinResult.spinId,name:nameInput.value,phone:phoneInput.value,consent:true
+  })}).catch(()=>({ok:false,status:0,data:{}}));
+  submitting=false;submitBtn.classList.remove('busy');submitBtn.innerHTML='Claim my reward &nbsp;→';updateSubmit();
+
+  if(ok||(status===409&&data.alreadyClaimed)){
+   const claim=data.claim;
+   store.set(claim);
+   showClaim(claim,{duplicate:!ok});
+   return;
+  }
+  if(data.errors){
+   if(data.errors.name)setError(nameInput,nameErr,data.errors.name);
+   if(data.errors.phone)setError(phoneInput,phoneErr,data.errors.phone);
+  }
+  formErr.textContent=status===0?'We couldn’t reach our server. Please check your connection and try again.':(data.error||'Something went wrong. Please try again.');
+ });
+
+ /* ---------- reward / redeemed cards ---------- */
+ let pollTimer=null,currentCode=null,lastShown='',duplicateFor=null;
+
+ function showClaim(claim,{duplicate=false}={}){
+  currentCode=claim.code;
+  lastShown=claim.code+'|'+claim.redeemedAt;
+  if(duplicate)duplicateFor=claim.code;
+  const redeemed=!!claim.redeemedAt;
+  const tpl=$(redeemed?'tpl-redeemed':'tpl-reward').content.cloneNode(true);
+  fill(tpl,'offer',claim.offerName);
+  fill(tpl,'name',claim.name);
+  fill(tpl,'first',String(claim.name).split(' ')[0]);
+  fill(tpl,'phone',claim.phone);
+  fill(tpl,'code',claim.code);
+  if(redeemed)fill(tpl,'redeemed',new Date(claim.redeemedAt).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}));
+  const notice=tpl.querySelector('[data-f="notice"]');
+  if(notice&&duplicateFor===claim.code){
+   notice.textContent=`You have already redeemed our offer with this phone number. Here is the reward you got: ${claim.offerName}.`;
+   notice.hidden=false;
+  }
+  tpl.querySelector('[data-slot="insta"]').replaceWith($('tpl-insta').content.cloneNode(true));
+  rewardStage.replaceChildren(tpl);
+  const wasVisible=rewardStage.classList.contains('show');
+  showOnly(rewardStage);
+  if(!wasVisible){
+   rewardStage.scrollIntoView({behavior:reduceMotion.matches?'auto':'smooth',block:'start'});
+   rewardStage.focus({preventScroll:true});
+  }
+  $('prize-note').hidden=true;
+  clearInterval(pollTimer);
+  if(!redeemed)pollTimer=setInterval(refreshClaim,POLL_MS);
+ }
+
+ async function refreshClaim(){
+  if(!currentCode)return;
+  const {ok,status,data}=await api('/api/claims/'+encodeURIComponent(currentCode)).catch(()=>({ok:false,status:0,data:{}}));
+  if(ok){
+   store.set(data.claim);
+   const key=data.claim.code+'|'+data.claim.redeemedAt;
+   if(key!==lastShown)showClaim(data.claim);
+  }else if(status===404){
+   // The reward no longer exists on the server (e.g. removed by staff): start over.
+   store.clear();clearInterval(pollTimer);currentCode=null;spinResult=null;rotation=0;
+   loadWheel();
+  }
+ }
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshClaim();});
+ window.addEventListener('focus',refreshClaim);
+
+ /* ---------- start ---------- */
+ const saved=store.get();
+ if(saved&&saved.code){
+  // Show what this browser already has straight away, then confirm with the server.
+  rewardStage.classList.add('show');
+  showClaim(saved);
+  refreshClaim();
+ }else{
+  loadWheel();
+ }
+})();
+</script>
+</body>
+</html>

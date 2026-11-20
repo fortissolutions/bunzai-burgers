@@ -1,0 +1,25 @@
+# Installed fresh inside the image
+node_modules
+
+# Secrets and local data: never bake these into the image
+.env
+.env.*
+!.env.example
+data
+
+# Not needed at runtime
+.git
+.gitignore
+.claude
+.vscode
+.preview-tools
+.animation-tools
+qa
+dist
+*.log
+*.py
+*.blend1
+Dockerfile
+docker-compose.yml
+.dockerignore
+DEPLOY.md

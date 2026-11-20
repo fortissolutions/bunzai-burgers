@@ -15,7 +15,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="./assets/site/tailwind-config.js"></script>
 <link rel="stylesheet" href="./assets/site/site.css"/>
-<!-- Craft section: sticky scroll track for the burger frame animation -->
+<!-- Craft section: sticky scroll track for the layered burger split animation -->
 <style data-purpose="craft-animation">
     /* Cards start hidden only once burger-overlay.js has taken over the section. */
     #craft[data-anim="on"] .anatomy-card {
@@ -23,6 +23,23 @@
       transform: translateY(30px) scale(0.9);
     }
     #craft[data-anim="on"] .anatomy-card[aria-hidden="true"] { pointer-events: none; }
+
+    /* Layered Double Smash: the stack box is sized to fit its container while keeping room for the split. */
+    #craft .burger-stage { container-type: size; }
+    #craft .burger-stack {
+      width: min(100cqw, calc(100cqh * 725 / 950));
+      aspect-ratio: 725 / 950;
+    }
+    #craft .burger-layer {
+      position: absolute; left: 0; top: 20.5%; width: 100%; height: auto;
+      will-change: transform;
+    }
+    #craft .burger-shadow {
+      position: absolute; left: 12%; right: 12%; top: 74.5%; height: 7%;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+      will-change: transform, opacity;
+    }
 
     @media (max-height: 760px) and (min-width: 1024px) {
       #craft .anatomy-card p { display: none; }
@@ -156,7 +173,7 @@
       </div>
 </div>
 </section>
-<!-- BEGIN: Craft / Burger Anatomy Section (scroll-driven frame animation) -->
+<!-- BEGIN: Craft / Burger Anatomy Section (scroll-driven layered burger split) -->
 <section class="relative bg-brand-bg min-h-[250vh] lg:min-h-[300vh]" data-purpose="burger-anatomy-section" id="craft">
 <div class="craft-sticky sticky top-20 h-[calc(100vh-80px)] overflow-hidden">
 <!-- Background Center Glow -->
@@ -165,13 +182,13 @@
 <!-- Section Header -->
 <div class="text-center max-w-2xl mx-auto mb-4 lg:mb-8 shrink-0">
 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-panel border border-brand-border text-brand-yellow text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-3 lg:mb-4">
-<span>● DECONSTRUCTED CRAFT • EXPLODE &amp; REJOIN</span>
+<span>● THE DOUBLE SMASH • SPLIT &amp; REJOIN</span>
 </div>
 <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white mb-2 lg:mb-4">
           The Anatomy Of A Perfect Smash
         </h2>
 <p class="craft-subtitle text-brand-muted text-sm sm:text-lg">
-          Scroll to disassemble ingredients into artisan layers. Every detail engineered for maximum crust and melted harmony.
+          Scroll to split our bestseller into its layers. Every detail engineered for maximum crust and melted harmony.
         </p>
 </div>
 <!-- Deconstructed Layout Grid: canvas first on mobile, centre column on desktop -->
@@ -221,15 +238,23 @@
 </div>
 </a>
 </div>
-<!-- Center Column: scroll-driven burger frames (burger-overlay.js) -->
+<!-- Center Column: Double Smash layers split apart by scroll (burger-overlay.js) -->
 <div class="col-span-2 lg:col-span-4 order-1 lg:order-2 h-full min-h-0 flex flex-col items-center justify-center">
 <div class="craft-canvas-box relative w-full flex-1 min-h-0">
-<canvas aria-label="Bunzai burger separating into its layers and coming back together" class="absolute inset-0 w-full h-full" id="anatomyBurgerCanvas" role="img"></canvas>
+<a class="burger-stage absolute inset-0 flex items-center justify-center" href="product.html?item=double-smash" aria-label="Bunzai Double Smash splitting into its layers: top bun, cheese and jalapeños, smashed beef patties and bottom bun. View the Double Smash">
+<div class="burger-stack relative" id="anatomyBurgerStack">
+<div aria-hidden="true" class="burger-shadow"></div>
+<img alt="" class="burger-layer" data-spread="0.3" data-tilt="-3" decoding="async" src="./assets/menu/layers/double-smash-bun-bottom.webp"/>
+<img alt="" class="burger-layer" data-spread="0.1" data-tilt="2" decoding="async" src="./assets/menu/layers/double-smash-patty.webp"/>
+<img alt="" class="burger-layer" data-spread="-0.12" data-tilt="-2" decoding="async" src="./assets/menu/layers/double-smash-cheese-patty.webp"/>
+<img alt="" class="burger-layer" data-spread="-0.34" data-tilt="4" decoding="async" src="./assets/menu/layers/double-smash-bun-top.webp"/>
+</div>
+</a>
 </div>
 <!-- Bottom Prompt Indicator -->
 <div class="text-center mt-2 lg:mt-3 shrink-0">
 <span class="text-[10px] sm:text-xs uppercase tracking-widest text-brand-yellow font-extrabold flex items-center justify-center gap-1.5">
-<span>EXPLODED CRAFT PREVIEW</span>
+<span>SPLIT THE DOUBLE SMASH</span>
 <span class="animate-bounce">↓</span>
 </span>
 </div>
@@ -638,7 +663,7 @@
       });
     });
   </script>
-<!-- Scroll-driven burger explode & rejoin for the Craft section -->
+<!-- Scroll-driven Double Smash split & rejoin for the Craft section -->
 <script type="module" src="./burger-overlay.js"></script>
 <!-- END: Client Interactivity Scripts -->
 </body></html>

@@ -1,75 +1,40 @@
 /**
  * Bunzai Burger - Craft Section Scroll Animation
- * Scrubs the transparent WebP burger frames inside #craft as the section scrolls past:
- * the burger holds assembled, explodes into its layers, then rejoins (frames 84 to 239),
- * while the six .anatomy-card callouts fade in with the explosion.
+ * Splits the layered Double Smash inside #craft as the section scrolls past:
+ * the burger holds assembled, its .burger-layer images split apart, then rejoin,
+ * while the six .anatomy-card callouts fade in with the split.
+ *
+ * Each layer reads data-spread (vertical offset at the peak, as a fraction of the
+ * layer's height) and data-tilt (degrees of rotation at the peak).
+ * The layer images are cut from assets/menu/double-smash.webp by split-burger-layers.py.
  */
 
-const FIRST_FRAME = 84;   // frame_00085.webp - assembled burger, start of the explosion sequence
-const LAST_FRAME = 239;   // frame_00240.webp - assembled again after the rejoin
-const PEAK_FRAME = 136;   // widest explosion; shown statically for reduced motion
 const HOLD = 0.18;        // desktop holds the assembled burger for the first 18% of the scroll
-
-// Union of the burger's opaque pixels across frames 84-239 (1280x720 source frames).
-// Drawing this fixed crop keeps the burger large in the canvas without jumping between frames.
-const CROP = { x: 388, y: 18, w: 498, h: 670 };
+const STACK_TILT = -4;    // degrees the whole stack leans at the peak
 
 class CraftBurgerAnimation {
-  constructor(section, canvas) {
+  constructor(section, stack) {
     this.section = section;
     this.sticky = section.querySelector('.craft-sticky');
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    this.stack = stack;
+    this.layers = Array.from(stack.querySelectorAll('.burger-layer')).map((el) => ({
+      el,
+      spread: parseFloat(el.dataset.spread) || 0,
+      tilt: parseFloat(el.dataset.tilt) || 0,
+    }));
+    this.shadow = stack.querySelector('.burger-shadow');
+    this.baseLayer = this.layers.reduce((a, b) => (b.spread > a.spread ? b : a), this.layers[0]);
     this.layerCards = Array.from(section.querySelectorAll('.anatomy-card'));
-    this.framesMap = new Map();
     this.rafId = null;
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     // Current interpolation state
-    this.currentFloatFrame = FIRST_FRAME;
-    this.currentTilt = 0;
+    this.currentFactor = 0;
     this.lastDrawnKey = '';
-    this.cssWidth = 0;
-    this.cssHeight = 0;
 
     this.section.dataset.anim = 'on';
     this.updateLayerCards(0);
     this.bindEvents();
-    this.preloadFrames();
-  }
-
-  getFramePath(index) {
-    const frameNum = String(index + 1).padStart(5, '0');
-    return `./animations/burger/frames/frame_${frameNum}.webp`;
-  }
-
-  async preloadFrames() {
-    const loadSingleFrame = (index) => new Promise((resolve) => {
-      const img = new Image();
-      img.decoding = 'async';
-      img.src = this.getFramePath(index);
-      img.onload = () => {
-        this.framesMap.set(index, img);
-        this.scheduleUpdate();
-        resolve(img);
-      };
-      img.onerror = () => resolve(null);
-    });
-
-    // Phase 1: both assembled ends plus the start of the explosion.
-    const priority = [LAST_FRAME, PEAK_FRAME];
-    for (let i = FIRST_FRAME; i <= FIRST_FRAME + 24; i++) priority.push(i);
-    await Promise.allSettled(priority.map(loadSingleFrame));
-
-    // Phase 2: progressively load the remaining frames in small chunks.
-    for (let i = FIRST_FRAME + 25; i < LAST_FRAME; i += 5) {
-      const chunk = [];
-      for (let j = i; j < Math.min(i + 5, LAST_FRAME); j++) {
-        if (!this.framesMap.has(j)) chunk.push(loadSingleFrame(j));
-      }
-      await Promise.allSettled(chunk);
-      await new Promise((r) => setTimeout(r, 12));
-    }
   }
 
   scheduleUpdate() {
@@ -92,19 +57,8 @@ class CraftBurgerAnimation {
     new ResizeObserver(() => {
       this.lastDrawnKey = '';
       schedule();
-    }).observe(this.canvas);
+    }).observe(this.stack);
     schedule();
-  }
-
-  getFrame(index) {
-    if (this.framesMap.has(index)) return this.framesMap.get(index);
-
-    // Fallback to nearest loaded frame
-    for (let offset = 1; offset <= LAST_FRAME - FIRST_FRAME; offset++) {
-      if (this.framesMap.has(index - offset)) return this.framesMap.get(index - offset);
-      if (this.framesMap.has(index + offset)) return this.framesMap.get(index + offset);
-    }
-    return null;
   }
 
   getProgress() {
@@ -121,30 +75,23 @@ class CraftBurgerAnimation {
     // Only work while the section is on or near the screen.
     if (rect.bottom < -winH || rect.top > winH * 2) return;
 
-    let targetFloatFrame;
-    let explodeFactor;
+    let targetFactor;
     if (this.reducedMotion.matches) {
-      targetFloatFrame = PEAK_FRAME;
-      explodeFactor = 1;
-      this.currentFloatFrame = PEAK_FRAME;
-      this.currentTilt = 0;
+      // Show the split burger statically.
+      targetFactor = 1;
+      this.currentFactor = 1;
     } else {
       const progress = this.getProgress();
       const animationProgress = window.innerWidth > 768 ? Math.max(0, (progress - HOLD) / (1 - HOLD)) : progress;
-      targetFloatFrame = FIRST_FRAME + animationProgress * (LAST_FRAME - FIRST_FRAME);
-      explodeFactor = Math.sin(animationProgress * Math.PI);
+      targetFactor = Math.sin(animationProgress * Math.PI);
     }
-    const targetTilt = this.reducedMotion.matches ? 0 : -5 * Math.PI / 180 * explodeFactor;
-    this.updateLayerCards(explodeFactor);
+    this.updateLayerCards(targetFactor);
 
     // Smooth interpolation (LERP) for liquid responsiveness
-    this.currentFloatFrame += (targetFloatFrame - this.currentFloatFrame) * 0.35;
-    this.currentTilt += (targetTilt - this.currentTilt) * 0.25;
-    this.renderCanvas();
+    this.currentFactor += (targetFactor - this.currentFactor) * 0.25;
+    this.renderLayers();
 
-    const settling = Math.abs(this.currentFloatFrame - targetFloatFrame) > 0.02 ||
-      Math.abs(this.currentTilt - targetTilt) > 0.0001;
-    if (settling) this.scheduleUpdate();
+    if (Math.abs(this.currentFactor - targetFactor) > 0.001) this.scheduleUpdate();
   }
 
   updateLayerCards(explodeFactor) {
@@ -164,53 +111,41 @@ class CraftBurgerAnimation {
     });
   }
 
-  renderCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cssW = this.canvas.clientWidth;
-    const cssH = this.canvas.clientHeight;
-    if (!cssW || !cssH) return;
-    if (this.canvas.width !== Math.round(cssW * dpr) || this.canvas.height !== Math.round(cssH * dpr)) {
-      this.canvas.width = Math.round(cssW * dpr);
-      this.canvas.height = Math.round(cssH * dpr);
-      this.lastDrawnKey = '';
-    }
+  renderLayers() {
+    const factor = this.currentFactor;
+    const layerH = this.layers[0].el.offsetHeight;
+    if (!layerH) return;
 
-    const frameIdx = Math.round(Math.max(FIRST_FRAME, Math.min(LAST_FRAME, this.currentFloatFrame)));
-    const img = this.getFrame(frameIdx);
-    if (!img) return;
-
-    // Skip redraws when nothing visible changed.
-    const key = `${frameIdx}|${img.src}|${this.currentTilt.toFixed(4)}|${this.canvas.width}x${this.canvas.height}`;
+    // Skip style writes when nothing visible changed.
+    const key = `${factor.toFixed(4)}|${layerH}`;
     if (key === this.lastDrawnKey) return;
     this.lastDrawnKey = key;
 
-    const ctx = this.ctx;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, cssW, cssH);
+    // Ease-out so the layers pop apart quickly and settle gently.
+    const split = 1 - Math.pow(1 - factor, 2);
+    this.stack.style.transform = `rotate(${STACK_TILT * split}deg)`;
 
-    // Contain-fit the tilted crop inside the canvas box.
-    const cos = Math.abs(Math.cos(this.currentTilt));
-    const sin = Math.abs(Math.sin(this.currentTilt));
-    const boundsW = CROP.w * cos + CROP.h * sin;
-    const boundsH = CROP.w * sin + CROP.h * cos;
-    const scale = Math.min(cssW / boundsW, cssH / boundsH) * 0.96;
-    const drawW = CROP.w * scale;
-    const drawH = CROP.h * scale;
+    // Layers only cast shadows on each other once they have separated.
+    const shadowAlpha = (0.45 * split).toFixed(2);
+    const filter = split > 0.01 ? `drop-shadow(0 18px 22px rgba(0, 0, 0, ${shadowAlpha}))` : 'none';
+    this.layers.forEach(({ el, spread, tilt }) => {
+      el.style.transform = `translateY(${(spread * split * layerH).toFixed(2)}px) rotate(${(tilt * split).toFixed(3)}deg)`;
+      el.style.filter = filter;
+    });
 
-    ctx.translate(cssW / 2, cssH / 2);
-    ctx.rotate(this.currentTilt);
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    // Draw one fully opaque frame at a time. Crossfading two transparent food
-    // frames causes brightness flicker and visible ghosting.
-    ctx.drawImage(img, CROP.x, CROP.y, CROP.w, CROP.h, -drawW / 2, -drawH / 2, drawW, drawH);
+    if (this.shadow) {
+      // The ground shadow follows the bottom bun and spreads out as the stack opens.
+      const baseY = this.baseLayer.spread * split * layerH;
+      this.shadow.style.transform = `translateY(${baseY.toFixed(2)}px) scaleX(${1 + 0.15 * split})`;
+      this.shadow.style.opacity = String(1 - 0.35 * split);
+    }
   }
 }
 
 function start() {
   const section = document.getElementById('craft');
-  const canvas = document.getElementById('anatomyBurgerCanvas');
-  if (section && canvas) new CraftBurgerAnimation(section, canvas);
+  const stack = document.getElementById('anatomyBurgerStack');
+  if (section && stack) new CraftBurgerAnimation(section, stack);
 }
 
 if (document.readyState === 'loading') {

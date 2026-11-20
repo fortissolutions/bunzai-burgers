@@ -1,0 +1,41 @@
+# Bunzai Burgers in production: the app + Caddy (web server with automatic HTTPS).
+#
+#   docker compose up -d          start (or update) everything
+#   docker compose logs -f app    follow the app logs
+#   docker compose down           stop (the database volume is kept)
+#
+# HTTPS: set DOMAIN=your.domain.com in .env and point the domain's DNS at this
+# server; Caddy gets and renews a free certificate. Without DOMAIN the site is
+# served on plain http (set COOKIE_SECURE=false so the admin login works).
+services:
+  app:
+    image: ${APP_IMAGE:-bunzai-burgers:latest}
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "8080"
+      DATA_DIR: /app/data
+      TRUST_PROXY: "1"
+    volumes:
+      - bunzai-data:/app/data   # SQLite database + backups
+    expose:
+      - "8080"                  # reachable only through Caddy
+
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    depends_on: [app]
+    command: caddy reverse-proxy --from ${DOMAIN:-:80} --to app:8080
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy-data:/data        # HTTPS certificates
+      - caddy-config:/config
+
+volumes:
+  bunzai-data:
+  caddy-data:
+  caddy-config:

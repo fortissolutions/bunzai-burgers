@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#050b18">
+<title>Spin &amp; Win Admin | Bunzai Burgers</title>
+<link rel="icon" type="image/svg+xml" href="/assets/bunzai-favicon.svg?v=1">
+<link rel="stylesheet" href="/assets/admin/admin.css">
+</head>
+<body>
+
+<!-- Login -->
+<main class="login" id="login-view" hidden>
+ <form class="login-card" id="login-form">
+  <div class="brand"><span class="brandmark" aria-hidden="true">B</span><span>BUNZAI<small>SPIN &amp; WIN ADMIN</small></span></div>
+  <label>Username<input name="username" autocomplete="username" required></label>
+  <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+  <button class="btn primary" type="submit">Sign in</button>
+  <p class="error" id="login-error" role="alert"></p>
+ </form>
+</main>
+
+<!-- Dashboard -->
+<div class="app" id="app-view" hidden>
+ <header class="topbar">
+  <div class="brand"><span class="brandmark" aria-hidden="true">B</span><span>BUNZAI<small>SPIN &amp; WIN ADMIN</small></span></div>
+  <nav class="tabs" role="tablist">
+   <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+   <button role="tab" data-tab="members" aria-selected="false">Members</button>
+   <button role="tab" data-tab="offers" aria-selected="false">Offers</button>
+  </nav>
+  <div class="who"><span id="who"></span><button class="btn ghost" id="logout" type="button">Log out</button></div>
+ </header>
+
+ <main class="content">
+  <!-- Overview -->
+  <section id="tab-overview" class="tab" role="tabpanel">
+   <div class="stats">
+    <div class="stat"><span>Spins</span><strong id="s-spins">–</strong></div>
+    <div class="stat"><span>Rewards claimed</span><strong id="s-claims">–</strong></div>
+    <div class="stat"><span>Redeemed in store</span><strong id="s-redeemed">–</strong></div>
+    <div class="stat"><span>Waiting to redeem</span><strong id="s-pending">–</strong></div>
+   </div>
+   <div class="panel">
+    <div class="panel-head"><h2>Awarded offers</h2><span class="muted" id="s-rate"></span></div>
+    <table class="table">
+     <thead><tr><th>Offer</th><th class="num">Awarded</th><th class="num">Redeemed</th><th class="bar-col">Share of rewards</th></tr></thead>
+     <tbody id="offer-stats"></tbody>
+    </table>
+   </div>
+   <div class="panel">
+    <div class="panel-head"><h2>Last 14 days</h2><span class="legend"><i class="k-claim"></i>Claimed <i class="k-red"></i>Redeemed</span></div>
+    <div class="daily" id="daily"></div>
+   </div>
+  </section>
+
+  <!-- Members -->
+  <section id="tab-members" class="tab" role="tabpanel" hidden>
+   <div class="panel">
+    <div class="panel-head">
+     <h2>Members</h2>
+     <div class="toolbar">
+      <input type="search" id="m-search" placeholder="Search name, phone or code" aria-label="Search members">
+      <select id="m-status" aria-label="Filter by status">
+       <option value="all">All</option><option value="pending">Waiting to redeem</option><option value="redeemed">Redeemed</option>
+      </select>
+      <a class="btn ghost" id="m-csv" href="/api/admin/claims.csv">Export CSV</a>
+     </div>
+    </div>
+    <div class="table-wrap">
+     <table class="table">
+      <thead><tr><th>Name</th><th>Phone</th><th>Offer</th><th>Code</th><th>Claimed</th><th>Store visit</th><th></th></tr></thead>
+      <tbody id="members"></tbody>
+     </table>
+    </div>
+    <p class="empty" id="m-empty" hidden>No members found.</p>
+   </div>
+  </section>
+
+  <!-- Offers -->
+  <section id="tab-offers" class="tab" role="tabpanel" hidden>
+   <div class="panel">
+    <div class="panel-head"><h2>Wheel offers</h2></div>
+    <p class="help"><b>On wheel</b>: shown as a segment on the spinning wheel. <b>Can be won</b>: the spin can land on it. An offer must be on the wheel to be won.</p>
+    <p class="warn" id="o-warn" hidden></p>
+    <div class="table-wrap">
+     <table class="table">
+      <thead><tr><th>Order</th><th>Offer name</th><th>On wheel</th><th>Can be won</th><th class="num">Awarded</th><th></th></tr></thead>
+      <tbody id="offers"></tbody>
+     </table>
+    </div>
+    <form class="add-offer" id="add-offer">
+     <input name="name" maxlength="24" placeholder="New offer name, e.g. FREE FRIES" aria-label="New offer name" required>
+     <button class="btn primary" type="submit">Add offer</button>
+    </form>
+   </div>
+  </section>
+ </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/admin/admin.js"></script>
+</body>
+</html>

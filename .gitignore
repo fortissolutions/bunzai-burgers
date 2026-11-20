@@ -9,3 +9,7 @@ node_modules/
 dist/
 .animation-tools/
 qa/
+
+# Spin & Win database and local config
+data/
+.env
