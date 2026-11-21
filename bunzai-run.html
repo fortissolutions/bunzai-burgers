@@ -112,6 +112,10 @@ canvas{display:block;width:min(86vw,430px);height:auto;filter:drop-shadow(0 16px
 .block .muted{color:var(--muted)}
 .addr{font-style:normal;color:#c3ccda;font-size:13px;line-height:1.65;margin:0 0 6px}
 .addr strong{color:var(--white);font-size:14px}
+.hours{margin:10px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#0a1324}
+.hours div{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:3px 0}
+.hours dt{color:var(--muted)}
+.hours dd{margin:0;font-weight:800;color:var(--white);white-space:nowrap}
 .map{position:relative;margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid #2a3b57;background:var(--panel-2);aspect-ratio:16/10}
 .map iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(.15) contrast(1.05)}
 .insta{display:flex;align-items:center;gap:14px;margin-top:18px;padding:14px 16px;border-radius:14px;background:#140f24;border:1px solid #3a2a4f;text-decoration:none;color:var(--white);transition:border-color .2s,transform .2s}
@@ -256,13 +260,17 @@ footer{border-top:1px solid var(--line);text-align:center;color:#77869d;padding:
    <h4>📍 Visit our store to redeem your reward</h4>
    <address class="addr">
     <strong>Bunzai Burgers — Muwaileh</strong><br>
-    Muwaileh Commercial, University City Road<br>
-    Muwaileh, Sharjah<br>
-    United Arab Emirates
+    Al Manbar Building, Ground Floor, Shop 5–6<br>
+    University City Road, Muwaileh Commercial<br>
+    Sharjah, United Arab Emirates
    </address>
-   <p class="muted">Open daily: 11:00 AM – 1:00 AM · Dine-in, takeaway &amp; drive-thru</p>
+   <dl class="hours" aria-label="Opening hours">
+    <div><dt>Saturday – Thursday</dt><dd>12:00 PM – 2:30 AM</dd></div>
+    <div><dt>Friday</dt><dd>1:30 PM – 2:30 AM</dd></div>
+   </dl>
+   <p class="muted">Dine-in, takeaway &amp; drive-thru</p>
    <div class="map">
-    <iframe src="https://www.google.com/maps?q=Muwaileh+Commercial+University+City+Road+Sharjah&amp;z=15&amp;output=embed" title="Map showing Bunzai Burgers, Muwaileh Commercial, University City Road, Sharjah" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    <iframe src="https://www.google.com/maps?q=BUNZAI+BURGERS,+Al+Manbar+Building,+University+City+Rd,+Muwaileh+Commercial,+Sharjah&amp;z=17&amp;output=embed" title="Map showing Bunzai Burgers, Al Manbar Building, Shop 5–6, University City Road, Muwaileh Commercial, Sharjah" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
    </div>
   </div>
   <div data-slot="insta"></div>

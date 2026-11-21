@@ -11,7 +11,7 @@
     whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
     instagram: 'https://www.instagram.com/bunzaiburgers/',
     tiktok: 'https://www.tiktok.com/@bunzai.burgers',
-    maps: 'https://maps.google.com/?q=Muwaileh+Commercial+University+City+Road+Sharjah'
+    maps: 'https://maps.app.goo.gl/fCY8xTVXn2N8MhzNA'
   };
   const NAV = [
     { page: 'home', label: 'Home', href: 'bunzai-burger.html' },
