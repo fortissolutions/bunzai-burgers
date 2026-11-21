@@ -13,3 +13,4 @@ qa/
 # Spin & Win database and local config
 data/
 .env
+.env.production

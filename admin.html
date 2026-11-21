@@ -46,7 +46,7 @@
    <div class="panel">
     <div class="panel-head"><h2>Awarded offers</h2><span class="muted" id="s-rate"></span></div>
     <table class="table">
-     <thead><tr><th>Offer</th><th class="num">Awarded</th><th class="num">Redeemed</th><th class="bar-col">Share of rewards</th></tr></thead>
+     <thead><tr><th>Offer</th><th class="num">Chance</th><th class="num">Awarded</th><th class="num">Redeemed</th><th class="bar-col">Share of rewards</th></tr></thead>
      <tbody id="offer-stats"></tbody>
     </table>
    </div>
@@ -82,12 +82,12 @@
   <!-- Offers -->
   <section id="tab-offers" class="tab" role="tabpanel" hidden>
    <div class="panel">
-    <div class="panel-head"><h2>Wheel offers</h2></div>
-    <p class="help"><b>On wheel</b>: shown as a segment on the spinning wheel. <b>Can be won</b>: the spin can land on it. An offer must be on the wheel to be won.</p>
+    <div class="panel-head"><h2>Wheel offers</h2><span class="muted" id="o-total"></span></div>
+    <p class="help"><b>On wheel</b>: shown as a segment on the spinning wheel. <b>Can be won</b>: the spin can land on it. An offer must be on the wheel to be won. <b>Win chance</b>: how often a spin lands on it (e.g. 30% = about 30 out of 100 spins). Chances of the offers that can be won should add up to 100%.</p>
     <p class="warn" id="o-warn" hidden></p>
     <div class="table-wrap">
      <table class="table">
-      <thead><tr><th>Order</th><th>Offer name</th><th>On wheel</th><th>Can be won</th><th class="num">Awarded</th><th></th></tr></thead>
+      <thead><tr><th>Order</th><th>Offer name</th><th>On wheel</th><th>Can be won</th><th>Win chance</th><th class="num">Awarded</th><th></th></tr></thead>
       <tbody id="offers"></tbody>
      </table>
     </div>

@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS offers (
   name        TEXT    NOT NULL,
   visible     INTEGER NOT NULL DEFAULT 1,
   selectable  INTEGER NOT NULL DEFAULT 1,
+  chance      REAL    NOT NULL DEFAULT 0,   -- win probability in % (relative weight)
   sort_order  INTEGER NOT NULL DEFAULT 0,
   created_at  TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   updated_at  TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
@@ -52,12 +53,48 @@ CREATE TABLE IF NOT EXISTS admins (
 );
 `);
 
-// The five launch offers, seeded whenever the offers table is empty.
-const DEFAULT_OFFERS = ['10% OFF', '20% OFF', 'FREE BURGER', 'FREE DRINK', 'FREE MEAL'];
+// The five launch offers and their win chances (%), seeded whenever the
+// offers table is empty. Chances are editable in the admin dashboard.
+const DEFAULT_OFFERS = [
+  { name: '10% OFF', chance: 5 },
+  { name: '20% OFF', chance: 30 },
+  { name: 'FREE FRIES', chance: 25 },
+  { name: 'FREE DRINK', chance: 25 },
+  { name: 'FREE BURGER', chance: 15 },
+];
 function seedOffers() {
   if (db.prepare('SELECT COUNT(*) AS n FROM offers').get().n > 0) return;
-  const insert = db.prepare('INSERT INTO offers (name, sort_order) VALUES (?, ?)');
-  DEFAULT_OFFERS.forEach((name, i) => insert.run(name, i + 1));
+  const insert = db.prepare('INSERT INTO offers (name, chance, sort_order) VALUES (?, ?, ?)');
+  DEFAULT_OFFERS.forEach((o, i) => insert.run(o.name, o.chance, i + 1));
+}
+
+// One-time upgrade for databases created before win chances existed:
+// add the column, swap the old FREE MEAL offer for FREE FRIES and apply
+// the default chances to the offers that match by name.
+const hasChance = db.prepare('PRAGMA table_info(offers)').all().some((c) => c.name === 'chance');
+if (!hasChance) {
+  db.transaction(() => {
+    db.exec('ALTER TABLE offers ADD COLUMN chance REAL NOT NULL DEFAULT 0');
+    const byName = (n) => db.prepare('SELECT * FROM offers WHERE upper(name) = ?').get(n);
+    const meal = byName('FREE MEAL');
+    if (meal && !byName('FREE FRIES')) {
+      const awarded = db.prepare('SELECT COUNT(*) AS n FROM claims WHERE offer_id = ?').get(meal.id).n;
+      if (awarded === 0) {
+        db.prepare("UPDATE offers SET name = 'FREE FRIES' WHERE id = ?").run(meal.id);
+      } else {
+        // Keep the awarded offer for history, but take it off the wheel.
+        db.prepare('UPDATE offers SET visible = 0, selectable = 0 WHERE id = ?').run(meal.id);
+        db.prepare("INSERT INTO offers (name, sort_order) VALUES ('FREE FRIES', ?)").run(meal.sort_order);
+      }
+    }
+    const setChance = db.prepare('UPDATE offers SET chance = ? WHERE upper(name) = ?');
+    for (const o of DEFAULT_OFFERS) setChance.run(o.chance, o.name);
+    // Offers with other names were equally likely before: give them an equal
+    // share instead of 0%, so no offer silently stops being winnable.
+    const defaultNames = DEFAULT_OFFERS.map((o) => o.name);
+    db.prepare(`UPDATE offers SET chance = 20 WHERE upper(name) NOT IN (${defaultNames.map(() => '?').join(',')})`)
+      .run(...defaultNames);
+  })();
 }
 seedOffers();
 

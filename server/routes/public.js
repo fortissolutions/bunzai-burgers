@@ -10,7 +10,7 @@ const router = express.Router();
 
 const q = {
   visibleOffers: db.prepare('SELECT id, name, selectable FROM offers WHERE visible = 1 ORDER BY sort_order, id'),
-  selectableOffers: db.prepare('SELECT id, name FROM offers WHERE visible = 1 AND selectable = 1 ORDER BY sort_order, id'),
+  selectableOffers: db.prepare('SELECT id, name, chance FROM offers WHERE visible = 1 AND selectable = 1 AND chance > 0 ORDER BY sort_order, id'),
   insertSpin: db.prepare('INSERT INTO spins (id, offer_id) VALUES (?, ?)'),
   getSpin: db.prepare('SELECT s.id, s.offer_id, s.claimed, o.name AS offer_name FROM spins s JOIN offers o ON o.id = s.offer_id WHERE s.id = ?'),
   markSpinClaimed: db.prepare('UPDATE spins SET claimed = 1 WHERE id = ? AND claimed = 0'),
@@ -38,11 +38,27 @@ router.get('/offers', (req, res) => {
   res.json({ offers: q.visibleOffers.all().map(({ id, name }) => ({ id, name })) });
 });
 
+/**
+ * Weighted random pick: an offer with chance 30 is won 6x as often as one
+ * with chance 5. Chances are relative, so they work even if they don't add
+ * up to exactly 100. Uses crypto.randomInt for unbiased randomness.
+ */
+function pickWeighted(pool) {
+  const weights = pool.map((o) => Math.round(o.chance * 100)); // 2 decimal places
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = crypto.randomInt(total);
+  for (let i = 0; i < pool.length; i++) {
+    r -= weights[i];
+    if (r < 0) return pool[i];
+  }
+  return pool[pool.length - 1];
+}
+
 // The server decides the result; the page only animates to it.
 router.post('/spin', rateLimit({ windowMs: 60_000, max: 20 }), (req, res) => {
   const pool = q.selectableOffers.all();
   if (pool.length === 0) return res.status(409).json({ error: 'No offers are available right now. Please check back soon.' });
-  const offer = pool[crypto.randomInt(pool.length)];
+  const offer = pickWeighted(pool);
   const spinId = crypto.randomBytes(16).toString('hex');
   q.insertSpin.run(spinId, offer.id);
   res.json({ spinId, offerId: offer.id, offerName: offer.name });
@@ -104,3 +120,4 @@ router.get('/claims/:code', rateLimit({ windowMs: 60_000, max: 60 }), (req, res)
 
 module.exports = router;
 module.exports.publicClaim = publicClaim;
+module.exports.pickWeighted = pickWeighted;

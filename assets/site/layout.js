@@ -9,7 +9,7 @@
   const WHATSAPP_NUMBER = '9719876543210';
   const LINKS = {
     whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
-    instagram: 'https://instagram.com/bunzai.burgers',
+    instagram: 'https://www.instagram.com/bunzaiburgers/',
     tiktok: 'https://www.tiktok.com/@bunzai.burgers',
     maps: 'https://maps.google.com/?q=Muwaileh+Commercial+University+City+Road+Sharjah'
   };

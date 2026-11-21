@@ -16,7 +16,8 @@ const q = {
     FROM offers o ORDER BY o.sort_order, o.id`),
   offer: db.prepare('SELECT * FROM offers WHERE id = ?'),
   maxOrder: db.prepare('SELECT COALESCE(MAX(sort_order), 0) AS m FROM offers'),
-  insertOffer: db.prepare('INSERT INTO offers (name, visible, selectable, sort_order) VALUES (?, ?, ?, ?)'),
+  insertOffer: db.prepare('INSERT INTO offers (name, visible, selectable, chance, sort_order) VALUES (?, ?, ?, ?, ?)'),
+  setChance: db.prepare("UPDATE offers SET chance = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id = ?"),
   updateOffer: db.prepare(`UPDATE offers SET name = @name, visible = @visible, selectable = @selectable,
                            sort_order = @sort_order, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id = @id`),
   deleteOffer: db.prepare('DELETE FROM offers WHERE id = ?'),
@@ -53,8 +54,16 @@ router.use(requireAdmin);
 router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
 
 // ---------- Offers ----------
+/** Chance in %: a number from 0 to 100 with at most 2 decimals, or null if invalid. */
+function parseChance(value) {
+  const n = typeof value === 'string' ? Number(value.trim()) : value;
+  if (typeof n !== 'number' || !Number.isFinite(n) || n < 0 || n > 100) return null;
+  return Math.round(n * 100) / 100;
+}
+const CHANCE_ERROR = 'Chance must be a number from 0 to 100.';
+
 const offerOut = (o) => ({
-  id: o.id, name: o.name, visible: !!o.visible, selectable: !!o.selectable,
+  id: o.id, name: o.name, visible: !!o.visible, selectable: !!o.selectable, chance: o.chance,
   sortOrder: o.sort_order, claimsCount: o.claims_count ?? 0, updatedAt: o.updated_at,
 });
 
@@ -63,9 +72,11 @@ router.get('/offers', (req, res) => res.json({ offers: q.offers.all().map(offerO
 router.post('/offers', (req, res) => {
   const name = cleanOfferName(req.body && req.body.name);
   if (!name) return res.status(400).json({ error: 'Offer name must be 1–24 characters.' });
+  const chance = req.body.chance === undefined ? 0 : parseChance(req.body.chance);
+  if (chance === null) return res.status(400).json({ error: CHANCE_ERROR });
   const visible = req.body.visible !== false;
   const selectable = visible && req.body.selectable !== false;
-  const info = q.insertOffer.run(name, visible ? 1 : 0, selectable ? 1 : 0, q.maxOrder.get().m + 1);
+  const info = q.insertOffer.run(name, visible ? 1 : 0, selectable ? 1 : 0, chance, q.maxOrder.get().m + 1);
   res.status(201).json({ offer: offerOut(q.offer.get(info.lastInsertRowid)) });
 });
 
@@ -82,7 +93,15 @@ router.patch('/offers/:id', (req, res) => {
   // An offer can only be won if it is on the wheel.
   const selectable = visible && (body.selectable !== undefined ? !!body.selectable : !!current.selectable);
   const sortOrder = Number.isInteger(body.sortOrder) ? body.sortOrder : current.sort_order;
-  q.updateOffer.run({ id: current.id, name, visible: visible ? 1 : 0, selectable: selectable ? 1 : 0, sort_order: sortOrder });
+  let chance = current.chance;
+  if (body.chance !== undefined) {
+    chance = parseChance(body.chance);
+    if (chance === null) return res.status(400).json({ error: CHANCE_ERROR });
+  }
+  db.transaction(() => {
+    q.updateOffer.run({ id: current.id, name, visible: visible ? 1 : 0, selectable: selectable ? 1 : 0, sort_order: sortOrder });
+    q.setChance.run(chance, current.id);
+  })();
   res.json({ offer: offerOut(q.offer.get(current.id)) });
 });
 
@@ -178,7 +197,7 @@ router.get('/stats', (req, res) => {
            (SELECT COUNT(*) FROM claims) AS claims,
            (SELECT COUNT(*) FROM claims WHERE redeemed_at IS NOT NULL) AS redeemed`).get();
   const byOffer = db.prepare(`
-    SELECT o.id, o.name, o.visible, o.selectable,
+    SELECT o.id, o.name, o.visible, o.selectable, o.chance,
            (SELECT COUNT(*) FROM spins s WHERE s.offer_id = o.id) AS spins,
            COUNT(c.id) AS awarded,
            SUM(CASE WHEN c.redeemed_at IS NOT NULL THEN 1 ELSE 0 END) AS redeemed
@@ -191,7 +210,7 @@ router.get('/stats', (req, res) => {
     GROUP BY day ORDER BY day`).all();
   res.json({
     totals: { ...totals, pending: totals.claims - totals.redeemed },
-    byOffer: byOffer.map((o) => ({ id: o.id, name: o.name, visible: !!o.visible, selectable: !!o.selectable, spins: o.spins, awarded: o.awarded, redeemed: o.redeemed || 0 })),
+    byOffer: byOffer.map((o) => ({ id: o.id, name: o.name, visible: !!o.visible, selectable: !!o.selectable, chance: o.chance, spins: o.spins, awarded: o.awarded, redeemed: o.redeemed || 0 })),
     daily,
   });
 });

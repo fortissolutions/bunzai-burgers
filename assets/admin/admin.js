@@ -3,6 +3,7 @@
 
   const $ = (id) => document.getElementById(id);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmtPct = (n) => `${Math.round(Number(n || 0) * 100) / 100}%`;
   const fmtDate = (iso) => iso ? new Date(iso).toLocaleString(undefined, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
 
   async function api(path, opts = {}) {
@@ -82,6 +83,7 @@
         const status = !o.visible ? '<span class="pill off">Hidden</span>' : !o.selectable ? '<span class="pill off">Can’t be won</span>' : '';
         return `<tr>
           <td>${esc(o.name)} ${status}</td>
+          <td class="num">${fmtPct(o.chance)}</td>
           <td class="num">${o.awarded}</td>
           <td class="num">${o.redeemed}</td>
           <td><div class="bar" title="${share}% of rewards"><i style="width:${(o.awarded / maxAwarded) * 100}%"></i><b style="width:${(o.redeemed / maxAwarded) * 100}%"></b></div></td>
@@ -152,14 +154,19 @@
       renderOffers(offers);
     } catch (err) { fail(err); }
   }
+  const canWin = (o) => o.visible && o.selectable && o.chance > 0;
   function renderOffers(offers) {
     const visible = offers.filter((o) => o.visible).length;
-    const winnable = offers.filter((o) => o.visible && o.selectable).length;
+    const winnable = offers.filter(canWin);
+    const total = Math.round(winnable.reduce((sum, o) => sum + o.chance, 0) * 100) / 100;
     const warn = $('o-warn');
-    warn.hidden = visible >= 2 && winnable >= 1;
-    warn.textContent = visible < 2
-      ? 'The wheel needs at least 2 offers on it. Until then customers will see “Spin & Win is taking a short break”.'
-      : 'No offer can be won right now, so spins will fail. Turn on “Can be won” for at least one offer.';
+    let message = '';
+    if (visible < 2) message = 'The wheel needs at least 2 offers on it. Until then customers will see “Spin & Win is taking a short break”.';
+    else if (!winnable.length) message = 'No offer can be won right now, so spins will fail. Turn on “Can be won” and give at least one offer a chance above 0%.';
+    else if (total !== 100) message = `The chances of the offers that can be won add up to ${total}%, not 100%. They still work: each offer’s real chance is shown in grey next to it.`;
+    warn.hidden = !message;
+    warn.textContent = message;
+    $('o-total').textContent = winnable.length ? `Total: ${total}%` : '';
     $('offers').innerHTML = offers.map((o, i) => `<tr data-id="${o.id}">
       <td><div class="order">
         <button class="btn small ghost" data-move="up" aria-label="Move ${esc(o.name)} up" ${i === 0 ? 'disabled' : ''}>↑</button>
@@ -168,6 +175,8 @@
       <td><input class="name-input" value="${esc(o.name)}" maxlength="24" aria-label="Offer name" data-name></td>
       <td><label class="switch"><input type="checkbox" data-field="visible" aria-label="Show ${esc(o.name)} on wheel" ${o.visible ? 'checked' : ''}><span></span></label></td>
       <td><label class="switch"><input type="checkbox" data-field="selectable" aria-label="${esc(o.name)} can be won" ${o.selectable ? 'checked' : ''} ${o.visible ? '' : 'disabled'}><span></span></label></td>
+      <td class="nowrap"><span class="chance"><input type="number" min="0" max="100" step="0.01" inputmode="decimal" value="${o.chance}" aria-label="Win chance for ${esc(o.name)} in percent" data-chance><span>%</span></span>
+        <small class="real">${canWin(o) ? (total === 100 ? '' : `real ${fmtPct((o.chance / total) * 100)}`) : 'never wins'}</small></td>
       <td class="num">${o.claimsCount}</td>
       <td class="num"><button class="btn small ghost danger" data-delete ${o.claimsCount ? 'disabled title="Already awarded — hide it instead"' : ''}>Delete</button></td>
     </tr>`).join('');
@@ -189,11 +198,14 @@
       } else if ('name' in e.target.dataset) {
         await patchOffer(id, { name: e.target.value });
         toast('Offer renamed');
+      } else if ('chance' in e.target.dataset) {
+        await patchOffer(id, { chance: e.target.value === '' ? 0 : Number(e.target.value) });
+        toast('Chance updated');
       }
     } catch (err) { fail(err); loadOffers(); }
   });
   $('offers').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && 'name' in e.target.dataset) e.target.blur();
+    if (e.key === 'Enter' && ('name' in e.target.dataset || 'chance' in e.target.dataset)) e.target.blur();
   });
   $('offers').addEventListener('click', async (e) => {
     const btn = e.target.closest('button');

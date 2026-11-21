@@ -88,6 +88,10 @@ input:focus,select:focus{border-color:var(--yellow);outline:none}
 .switch input:disabled+span{opacity:.35}
 .switch input:focus-visible+span{outline:2px solid var(--yellow);outline-offset:2px}
 .order{display:flex;gap:4px}
+.chance{display:inline-flex;align-items:center;gap:4px}
+.chance input{width:84px;text-align:right}
+.chance span{color:var(--muted)}
+.real{display:block;color:var(--muted);font-size:11px;margin-top:3px}
 .add-offer{display:flex;gap:8px;margin-top:14px}
 .add-offer input{flex:1;max-width:320px}
 
