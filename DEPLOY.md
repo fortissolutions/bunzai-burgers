@@ -1,6 +1,6 @@
 # Deploying Bunzai Burgers to AWS with Docker
 
-This guide covers building the Docker image, pushing it to Amazon ECR, running it on an EC2 server with HTTPS, updating it, backing it up and clearing the data.
+This guide covers building the Docker image, pushing it to Amazon ECR, running it on an EC2 server behind nginx with HTTPS, updating it, backing it up and clearing the data.
 
 ## How it fits together
 
@@ -8,10 +8,12 @@ This guide covers building the Docker image, pushing it to Amazon ECR, running i
 Customer / admin browser
         │  https://your-domain
         ▼
-EC2 server (Docker)
-  ├─ caddy   ports 80/443: HTTPS certificate + forwards traffic
-  └─ app     Node server (website, /bunzai-run, /admin, API)
-               └─ volume "bunzai-data" → /app/data/bunzai.db (SQLite) + backups
+EC2 server
+  ├─ nginx (on the host)   ports 80/443, HTTPS via Let's Encrypt (certbot)
+  │      │ proxy_pass http://127.0.0.1:8080
+  │      ▼
+  └─ Docker: app           Node server (website, /bunzai-run, /admin, API)
+                             └─ volume "bunzai-data" → /app/data/bunzai.db (SQLite) + backups
 ```
 
 **Why EC2:** the database is a single SQLite file, so it needs one server with a persistent disk. App Runner and ECS Fargate don't keep files between restarts. SQLite on EFS (network storage) risks database corruption.
@@ -91,11 +93,11 @@ exit   # log out and back in so the docker group applies
 
 ## 5. Configure and start the app (one-time)
 
-From your computer, copy the compose file to the server:
+From your computer, copy the compose file and the nginx config to the server:
 
 ```bash
 ssh -i your-key.pem ec2-user@<ELASTIC_IP> "mkdir -p ~/bunzai"
-scp -i your-key.pem docker-compose.yml ec2-user@<ELASTIC_IP>:~/bunzai/
+scp -i your-key.pem docker-compose.yml deploy/nginx/bunzai.conf ec2-user@<ELASTIC_IP>:~/bunzai/
 ```
 
 On the server, create `~/bunzai/.env` (`nano ~/bunzai/.env`). Use a **new** password and secret, not the ones from your laptop:
@@ -105,13 +107,12 @@ ADMIN_USERNAME=admin
 ADMIN_PASSWORD=<strong password>
 SESSION_SECRET=<64 random hex characters>
 APP_IMAGE=<ACCOUNT_ID>.dkr.ecr.me-central-1.amazonaws.com/bunzai-burgers:v1
-DOMAIN=spin.yourdomain.com
 ```
 
 - Generate a secret with `openssl rand -hex 32`.
 - Lock the file down with `chmod 600 ~/bunzai/.env`.
 
-Point the domain's DNS at the server first. In your DNS provider (or Route 53), create an **A record** for `spin.yourdomain.com` pointing to the Elastic IP. Then start the app:
+Start the app:
 
 ```bash
 cd ~/bunzai
@@ -120,13 +121,53 @@ aws ecr get-login-password --region me-central-1 \
 docker compose pull
 docker compose up -d --no-build
 docker compose ps        # app should show "healthy"
+curl http://127.0.0.1:8080/healthz   # {"ok":true}
 ```
 
-Open `https://spin.yourdomain.com/bunzai-run` and `https://spin.yourdomain.com/admin`. Caddy gets the HTTPS certificate automatically on the first visit, which can take a few seconds.
+The app listens only on `127.0.0.1:8080`, so it can't be reached from the internet until nginx is set up. Containers restart automatically after a crash or a server reboot (`restart: unless-stopped`).
 
-> **No domain yet?** Leave `DOMAIN` out and add `COOKIE_SECURE=false`. The site is then served on `http://<ELASTIC_IP>`. Switch to a domain and HTTPS before going live, because phone numbers would otherwise travel unencrypted.
+## 5b. Set up nginx and HTTPS (one-time)
 
-Containers restart automatically after a crash or a server reboot (`restart: unless-stopped`).
+First, point the domain at the server. In your DNS provider (or Route 53), create an **A record** for `spin.yourdomain.com` pointing to the Elastic IP.
+
+Install nginx and certbot:
+
+```bash
+# Amazon Linux 2023
+sudo dnf install -y nginx certbot python3-certbot-nginx
+# Ubuntu
+sudo apt-get install -y nginx certbot python3-certbot-nginx
+
+sudo systemctl enable --now nginx
+```
+
+Add the site config:
+
+```bash
+cd ~/bunzai
+sed -i 's/spin.yourdomain.com/<your real domain>/' bunzai.conf
+
+# Amazon Linux 2023
+sudo cp bunzai.conf /etc/nginx/conf.d/bunzai.conf
+# Ubuntu (also remove the default site)
+sudo cp bunzai.conf /etc/nginx/sites-available/bunzai.conf
+sudo ln -s /etc/nginx/sites-available/bunzai.conf /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+Get the HTTPS certificate. certbot edits the nginx config to add HTTPS and the http → https redirect, and renews the certificate automatically:
+
+```bash
+sudo certbot --nginx -d <your real domain>
+```
+
+Open `https://<your domain>/bunzai-run` and `https://<your domain>/admin`.
+
+> **No domain yet?** Skip certbot, put `server_name _;` in `bunzai.conf`, and add `COOKIE_SECURE=false` to `.env` (then run `docker compose up -d`). The site is then served on `http://<ELASTIC_IP>`. Switch to a domain and HTTPS before going live, because phone numbers would otherwise travel unencrypted. Remove `COOKIE_SECURE=false` once HTTPS works.
+
+> **Port 8080 already used** by something else on the server? Set `APP_PORT=8081` in `.env` and change `127.0.0.1:8080` in the nginx config to match.
 
 ## 6. Deploy an update
 
@@ -184,8 +225,11 @@ Customers whose reward was deleted see the wheel again the next time they open `
 
 | Problem | Check |
 |---|---|
-| Site not loading | `docker compose ps`, `docker compose logs -f app caddy`, security group allows 80/443 |
-| HTTPS certificate not issued | DNS A record points at the Elastic IP (`dig spin.yourdomain.com`); port 80 open; `docker compose logs caddy` |
+| Site not loading | `docker compose ps`, `curl http://127.0.0.1:8080/healthz`, `sudo nginx -t`, security group allows 80/443 |
+| nginx shows **502 Bad Gateway** | The app isn't running or uses another port: `docker compose ps`, `docker compose logs -f app`, check `APP_PORT` matches the nginx config |
+| nginx shows its default welcome page | The default site is still active: remove it (Ubuntu: `/etc/nginx/sites-enabled/default`) and check `server_name` matches your domain |
+| certbot fails | DNS A record points at the Elastic IP (`dig spin.yourdomain.com`); port 80 open in the security group; `sudo tail /var/log/letsencrypt/letsencrypt.log` |
+| Rate limit hits everyone at once | nginx isn't sending `X-Forwarded-For`: use the provided `bunzai.conf` |
 | Admin login "succeeds" but bounces back | Using plain http in production: use HTTPS, or set `COOKIE_SECURE=false` for testing |
 | `docker compose pull` → "no basic auth credentials" | Run the `aws ecr get-login-password … docker login` command again; check the instance IAM role |
 | `exec format error` | Image built for the wrong CPU: rebuild with `--platform linux/amd64` (or `arm64` for `t4g`) |
